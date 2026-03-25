@@ -121,7 +121,7 @@ export async function signout() {
 
   revalidateTag("customers", "max")
   revalidateTag("cart", "max")
-  redirect("/account")
+  redirect("/login")
 }
 
 export async function updateCustomer(data: Partial<CustomerProfile>) {

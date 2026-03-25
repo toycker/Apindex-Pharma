@@ -2,7 +2,6 @@ import React from "react"
 import Link from "next/link"
 import {
   ArrowLeftOnRectangleIcon,
-  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import { signout } from "@lib/data/customer"
@@ -121,16 +120,13 @@ export default async function AdminLayout({
           {/* Bottom Section */}
           <div className="p-3 border-t border-gray-200 space-y-1 shrink-0">
             <Link
-              href="/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/admin"
               className="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-all"
             >
               <div className="h-5 w-5 rounded-md bg-gray-100 group-hover:bg-white flex items-center justify-center">
                 <div className="h-1.5 w-1.5 rounded-full bg-gray-400 group-hover:bg-gray-600" />
               </div>
-              <span className="flex-1">Online Store</span>
-              <ArrowTopRightOnSquareIcon className="h-4 w-4 text-gray-400 group-hover:text-gray-600 opacity-60 group-hover:opacity-100 transition-all" />
+              <span className="flex-1">Dashboard Home</span>
             </Link>
             <div className="h-px bg-gray-200 my-2" />
             <AdminSettingsLink />

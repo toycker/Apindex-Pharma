@@ -19,7 +19,12 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") as "signup" | "invite" | "magiclink" | "recovery" | "email_change" | "email" | null
 
   // if "next" is in search params, use it as the redirection URL
-  const next = searchParams.get("next") ?? "/account"
+  // admin-only mode allows redirects to /admin paths only
+  const requestedNext = searchParams.get("next")
+  const next =
+    requestedNext && requestedNext.startsWith("/admin")
+      ? requestedNext
+      : "/admin"
 
   if (code || token_hash) {
     const cookieStore = await cookies()
@@ -69,7 +74,9 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(`${origin}${next}`)
       }
 
-      return NextResponse.redirect(`${origin}/account?auth_error=invaild_or_expired_link`)
+      return NextResponse.redirect(
+        `${origin}/login?auth_error=invalid_or_expired_link`
+      )
     } else {
       console.log("Auth callback successful, redirecting to:", next)
       const forwardedHost = request.headers.get("x-forwarded-host") // auth providers may use this
@@ -86,7 +93,7 @@ export async function GET(request: NextRequest) {
 
   console.log("Auth callback failed: No code/token or result in error page.")
   // return the user to an error page with instructions
-  const errorUrl = new URL(next, origin) // Usually /account
-  errorUrl.searchParams.set('auth_error', 'invaild_or_expired_link')
+  const errorUrl = new URL("/login", origin)
+  errorUrl.searchParams.set("auth_error", "invalid_or_expired_link")
   return NextResponse.redirect(errorUrl)
 }

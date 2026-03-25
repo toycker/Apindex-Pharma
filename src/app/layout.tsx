@@ -1,47 +1,29 @@
-import { getBaseURL } from "@lib/util/env"
-import { Metadata } from "next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
-import { Analytics as GTMAnalytics } from "@lib/analytics"
-import MetaPixel from "@lib/analytics/meta-pixel"
-import NextTopLoader from "nextjs-toploader"
+import type { Metadata } from "next"
+import { inter } from "@lib/fonts"
 import Providers from "./providers"
-import { grandstander, inter } from "@lib/fonts"
-import PWAClientWrapper from "@/components/pwa-client-wrapper"
 import "@/styles/globals.css"
 
 export const metadata: Metadata = {
   title: {
     template: "%s | Toycker",
-    default: "Toycker | Premium Toys & Collectibles",
+    default: "Toycker Admin",
   },
-  description: "Shop the best selection of action figures, building sets, and educational toys at Toycker. Exclusive collections and free shipping on orders over ₹500.",
-  keywords: ["toys", "action figures", "building blocks", "educational toys", "Toycker"],
-  metadataBase: new URL(getBaseURL()),
+  description: "Admin panel for Toycker backend operations.",
   icons: {
     icon: "/favicon.png",
   },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {
-  // Removed server-side data fetching to enable static rendering
-  // Auth and wishlist data now fetched client-side by providers
   return (
-    <html lang="en" data-mode="light" suppressHydrationWarning className={`${grandstander.variable} ${inter.variable}`}>
-      <head>
-        <GTMAnalytics />
-        <link rel="preconnect" href="https://cdn.toycker.in" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://toycker-supabase.r2.dev" crossOrigin="anonymous" />
-      </head>
+    <html
+      lang="en"
+      data-mode="light"
+      suppressHydrationWarning
+      className={inter.variable}
+    >
       <body suppressHydrationWarning className="font-sans">
-        <NextTopLoader color="#059669" showSpinner={false} height={3} />
-        <Providers>
-          {props.children}
-          <PWAClientWrapper />
-        </Providers>
-        <MetaPixel />
-        <SpeedInsights />
-        <Analytics />
+        <Providers>{props.children}</Providers>
       </body>
     </html>
   )

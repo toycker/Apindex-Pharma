@@ -404,6 +404,8 @@ export async function verifyOtp(
   const code = ((formData.get("code") as string) || "").trim()
   const maxAttempts = getOtpMaxAttempts()
   const requestedRedirectPath = getRequestedRedirectPath(formData)
+  const requestedAdminRedirectPath =
+    requestedRedirectPath?.startsWith("/admin") ? requestedRedirectPath : null
 
   if (!validatePhone(phone)) {
     return { success: false, error: "Invalid phone number" }
@@ -601,12 +603,12 @@ export async function verifyOtp(
 
   // Revalidate caches
   revalidatePath("/", "layout")
-  revalidatePath("/account", "layout")
+  revalidatePath("/admin", "layout")
   revalidateTag("customers", "max")
 
   if (isAdmin) {
-    redirect("/admin")
+    redirect(requestedAdminRedirectPath || "/admin")
   }
 
-  redirect(requestedRedirectPath || "/account")
+  redirect("/login?error=admin_only")
 }

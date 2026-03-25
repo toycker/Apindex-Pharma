@@ -3,10 +3,16 @@
 import { cache } from "react"
 import { createClient } from "@/lib/supabase/server"
 import { Product } from "@/lib/supabase/types"
-import { SortOptions } from "@modules/store/components/refinement-list/types"
 
 import { normalizeProductImage } from "@lib/util/images"
 import { ACTIVE_PRODUCT_STATUS } from "@lib/util/product-visibility"
+
+type SortOptions =
+  | "price_asc"
+  | "price_desc"
+  | "alpha_asc"
+  | "alpha_desc"
+  | "featured"
 
 const PRODUCT_SELECT = `
   *, 

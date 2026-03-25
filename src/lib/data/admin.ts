@@ -218,7 +218,7 @@ export async function ensureAdmin() {
     .single()
 
   if (profile?.role !== "admin") {
-    redirect("/")
+    redirect("/login?error=admin_only")
   }
 }
 

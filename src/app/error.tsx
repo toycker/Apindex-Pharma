@@ -43,13 +43,13 @@ export default function RootError({ error, reset }: RootErrorProps) {
             Try Again
           </Button>
 
-          <Link href="/">
+          <Link href="/admin">
             <Button
               variant="secondary"
               className="inline-flex items-center justify-center gap-2 w-full"
             >
               <Home className="h-4 w-4" />
-              Go Home
+              Go to Admin
             </Button>
           </Link>
         </div>

@@ -16,9 +16,9 @@ export default function NotFound() {
       </p>
       <Link
         className="flex gap-x-1 items-center group"
-        href="/"
+        href="/admin"
       >
-        <span className="text-ui-fg-interactive">Go to frontpage</span>
+        <span className="text-ui-fg-interactive">Go to admin dashboard</span>
         <ArrowUpRight
           className="group-hover:rotate-45 ease-in-out duration-150"
           size={20}

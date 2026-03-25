@@ -1,1 +1,0 @@
-export const STORE_PRODUCT_PAGE_SIZE = 12
