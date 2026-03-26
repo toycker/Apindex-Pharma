@@ -1,6 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+:root {
+  --apx-primary: #964900;
+  --apx-primary-container: #f58220;
+  --apx-primary-fixed: #ffdcc6;
+  --apx-secondary: #336b00;
+  --apx-secondary-container: #aff679;
+  --apx-secondary-fixed: #aff679;
+  --apx-on-secondary-container: #377200;
+  --apx-surface: #fbf9f8;
+  --apx-surface-container-low: #f5f3f3;
+  --apx-surface-container-lowest: #ffffff;
+  --apx-surface-container-high: #e9e8e7;
+  --apx-on-surface: #1b1c1c;
+  --apx-on-surface-variant: #564336;
+  --apx-outline-variant: #ddc1b0;
+  --apx-bg: var(--apx-surface);
+  --apx-text: var(--apx-on-surface);
+}
 
 html {
   max-width: 100%;
@@ -12,10 +33,37 @@ body {
 }
 
 body {
-  font-family: var(--font-Grandstander), sans-serif;
+  font-family: var(--font-inter), sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.apx-font-headline {
+  font-family: "Manrope", var(--font-inter), sans-serif;
+}
+
+.apx-font-body {
+  font-family: var(--font-inter), sans-serif;
+}
+
+.apx-landing ::selection {
+  background-color: var(--apx-secondary-container);
+  color: var(--apx-on-secondary-container);
+}
+
+.glass-nav {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.ambient-shadow {
+  box-shadow: 0 20px 40px rgba(86, 67, 54, 0.06);
+}
+
+.material-symbols-outlined {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 @layer utilities {

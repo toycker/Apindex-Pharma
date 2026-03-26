@@ -16,10 +16,10 @@ import { AdminGlobalSearch } from "@modules/admin/components/admin-global-search
 import { inter } from "@lib/fonts"
 
 export const metadata = {
-  title: "Toycker Admin",
-  description: "Store Management",
+  title: "Apindex Admin",
+  description: "Apindex backend management",
   icons: {
-    icon: "/favicon.png",
+    icon: "/apindex-logo.jpg",
   },
 }
 

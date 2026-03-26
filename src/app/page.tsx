@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation"
+import LandingPageTemplate from "@modules/landing/templates/landing-page"
 
 export default function RootPage() {
-  redirect("/admin")
+  return <LandingPageTemplate />
 }

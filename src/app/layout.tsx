@@ -5,12 +5,13 @@ import "@/styles/globals.css"
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Toycker",
-    default: "Toycker Admin",
+    template: "%s | Apindex",
+    default: "Apindex",
   },
-  description: "Admin panel for Toycker backend operations.",
+  description:
+    "Apindex pharmaceutical solutions and admin backend operations.",
   icons: {
-    icon: "/favicon.png",
+    icon: "/apindex-logo.jpg",
   },
 }
 
