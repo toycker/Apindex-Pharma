@@ -4,6 +4,10 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { r2Client } from "../r2"
 import { v4 as uuidv4 } from "uuid"
+import {
+  getProductMediaBaseUrl,
+  PRODUCT_MEDIA_CONFIG_ERROR,
+} from "@/lib/util/images"
 
 export async function getPresignedUploadUrl({
     fileType,
@@ -15,6 +19,10 @@ export async function getPresignedUploadUrl({
     maxSizeMB?: number
 }) {
     try {
+        if (folder === "products" && !getProductMediaBaseUrl()) {
+            return { error: PRODUCT_MEDIA_CONFIG_ERROR }
+        }
+
         // Validate file type based on folder
         const allowedTypes: Record<string, string[]> = {
             reviews: [

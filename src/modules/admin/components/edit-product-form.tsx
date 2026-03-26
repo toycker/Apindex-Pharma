@@ -21,6 +21,8 @@ import { getYoutubeId, getYoutubeEmbedUrl } from "@/lib/util/youtube"
 import { Tag, Globe, Layers, Edit2, Link2, Link2Off } from "lucide-react"
 import { slugify } from "@/lib/util/slug"
 import DeleteProductButton from "./delete-product-button"
+import ProductPharmaDetailsFields from "./product-pharma-details-fields"
+import { getProductPharmaDetails } from "@/lib/util/product-pharma"
 import { isStorefrontVisibleProduct } from "@/lib/util/product-visibility"
 
 type EditProductFormProps = {
@@ -54,7 +56,7 @@ export default function EditProductForm({
   const [isEditingHandle, setIsEditingHandle] = useState(false)
   const [isHandleManuallyEdited, setIsHandleManuallyEdited] = useState(false)
   const canViewInStore = isStorefrontVisibleProduct(product.status)
-  const catalogPreviewHref = `/products?q=${encodeURIComponent(product.handle)}`
+  const catalogPreviewHref = `/products/${encodeURIComponent(product.handle)}`
   const storefrontStatusMessage =
     product.status === "active"
       ? "This product is live in your public catalog."
@@ -84,6 +86,10 @@ export default function EditProductForm({
     handle: rc.related_product.handle,
     thumbnail: rc.related_product.image_url
   })) || [], [product.related_combinations])
+  const pharmaDetails = useMemo(
+    () => getProductPharmaDetails(product.metadata),
+    [product.metadata]
+  )
 
   return (
     <form action={updateProduct}>
@@ -228,6 +234,10 @@ export default function EditProductForm({
                 }}
               />
             </div>
+          </AdminCard>
+
+          <AdminCard title="Pharma Details">
+            <ProductPharmaDetailsFields details={pharmaDetails} />
           </AdminCard>
 
           <AdminCard title="YouTube Video">
@@ -506,3 +516,5 @@ export default function EditProductForm({
     </form>
   )
 }
+
+

@@ -8,13 +8,13 @@ import { MaterialSymbolIcon } from "@/modules/landing/components/material-symbol
 import {
   buildCatalogRequestHref,
   buildPageTokens,
-  buildProductEnquiryHref,
   buildProductsPageHref,
   getCategoryIcon,
   getProductBadge,
   getProductIcon,
   getProductSummary,
 } from "@/modules/products/lib/catalog-ui"
+import { buildProductDetailHref } from "@/modules/products/lib/product-detail-ui"
 
 type ProductsCatalogSectionProps = {
   catalog: PublicCatalogResult
@@ -143,7 +143,12 @@ export default function ProductsCatalogSection({
                     />
                   </div>
                   <h3 className="apx-font-headline text-2xl font-bold tracking-tight text-[var(--apx-on-surface)]">
-                    {product.name}
+                    <Link
+                      href={buildProductDetailHref(product.handle)}
+                      className="transition-colors hover:text-[var(--apx-primary)]"
+                    >
+                      {product.name}
+                    </Link>
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-[var(--apx-on-surface-variant)]">
                     {getProductSummary(product)}
@@ -151,13 +156,13 @@ export default function ProductsCatalogSection({
                 </div>
 
                 <div className="mt-8 border-t border-[var(--apx-surface-container-high)] pt-6">
-                  <a
-                    href={buildProductEnquiryHref(product)}
+                  <Link
+                    href={buildProductDetailHref(product.handle)}
                     className="flex items-center justify-between text-sm font-bold text-[var(--apx-on-surface)] transition-colors hover:text-[var(--apx-primary)]"
                   >
-                    <span>Enquire Now</span>
+                    <span>View Product</span>
                     <MaterialSymbolIcon name="arrow_outward" className="text-lg" />
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}
@@ -222,3 +227,4 @@ export default function ProductsCatalogSection({
     </section>
   )
 }
+

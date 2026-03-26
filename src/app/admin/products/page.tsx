@@ -151,7 +151,7 @@ export default async function AdminProducts({
             <tbody className="bg-white divide-y divide-gray-100">
               {products.length > 0 ? (
                 products.map((product) => {
-                  const catalogPreviewHref = `/products?q=${encodeURIComponent(
+                  const catalogPreviewHref = `/products/${encodeURIComponent(
                     product.handle
                   )}`
 
@@ -293,3 +293,5 @@ export default async function AdminProducts({
     </div>
   )
 }
+
+

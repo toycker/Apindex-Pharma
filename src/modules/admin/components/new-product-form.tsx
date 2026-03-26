@@ -14,6 +14,7 @@ import { PhotoIcon } from "@heroicons/react/24/outline"
 import { COLOR_SWATCH_MAP, STANDARD_COLORS } from "@/lib/constants/colors"
 import CategoryCheckboxList from "./category-checkbox-list"
 import MediaGallery from "./media-manager"
+import ProductPharmaDetailsFields from "./product-pharma-details-fields"
 import { slugify } from "@/lib/util/slug"
 import { DEFAULT_MANUAL_PRODUCT_STATUS } from "@/lib/util/product-visibility"
 import { useToast } from "@modules/common/context/toast-context"
@@ -285,6 +286,10 @@ export default function NewProductForm({ collections, categories }: NewProductFo
           <div className="space-y-4">
             <MediaGallery />
           </div>
+        </AdminCard>
+
+        <AdminCard title="Pharma Details">
+          <ProductPharmaDetailsFields />
         </AdminCard>
 
         <AdminCard title="YouTube Video">
@@ -767,4 +772,5 @@ export default function NewProductForm({ collections, categories }: NewProductFo
     </form >
   )
 }
+
 

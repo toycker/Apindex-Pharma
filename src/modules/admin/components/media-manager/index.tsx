@@ -19,7 +19,11 @@ import {
 import { Plus, Image as ImageIcon, Loader2 } from "lucide-react"
 import { SortableItem } from "./sortable-item"
 import { getPresignedUploadUrl } from "@/lib/actions/storage"
-import { getFileUrl } from "@/lib/r2"
+import {
+    buildProductFileUrl,
+    getProductMediaBaseUrl,
+    PRODUCT_MEDIA_CONFIG_ERROR,
+} from "@/lib/util/images"
 import { cn } from "@lib/util/cn"
 
 interface MediaGalleryProps {
@@ -73,6 +77,10 @@ export default function MediaGallery({ initialImages = [], onOrderChange }: Medi
         setUploadProgress(0)
 
         try {
+            if (!getProductMediaBaseUrl()) {
+                throw new Error(PRODUCT_MEDIA_CONFIG_ERROR)
+            }
+
             const uploadedUrls: string[] = []
 
             for (const file of files) {
@@ -99,7 +107,7 @@ export default function MediaGallery({ initialImages = [], onOrderChange }: Medi
 
                     xhr.addEventListener("load", () => {
                         if (xhr.status === 200) {
-                            resolve(getFileUrl(key))
+                            resolve(buildProductFileUrl(key))
                         } else {
                             reject(new Error(`Upload failed for ${file.name}`))
                         }
@@ -122,7 +130,11 @@ export default function MediaGallery({ initialImages = [], onOrderChange }: Medi
             })
         } catch (error) {
             console.error("Upload error:", error)
-            alert("Some files failed to upload. Please try again.")
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : "Some files failed to upload. Please try again."
+            )
         } finally {
             setIsUploading(false)
             setUploadProgress(0)
