@@ -10,7 +10,7 @@ import TopNavBar from "@modules/landing/sections/top-nav-bar"
 export default function LandingPageTemplate() {
   return (
     <div className="apx-landing apx-font-body bg-[var(--apx-surface)] text-[var(--apx-on-surface)]">
-      <TopNavBar />
+      <TopNavBar currentPage="home" />
       <main className="!pb-0">
         <HeroSection />
         <DosageFormsSection />
