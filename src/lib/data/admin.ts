@@ -110,6 +110,7 @@ function revalidateStorefrontProductPaths(
   )
 
   revalidatePath("/")
+  revalidatePath("/products")
   revalidatePath("/store")
   revalidatePath("/collections")
   revalidatePath("/categories")
@@ -981,9 +982,9 @@ export async function createProduct(
       const variantsToInsert = variantsData.map((v) => ({
         product_id: newProduct.id,
         title: v.title,
-        sku: v.sku,
-        price: v.price,
-        compare_at_price: v.compare_at_price,
+        sku: v.sku || null,
+        price: v.price ?? 0,
+        compare_at_price: v.compare_at_price ?? null,
         inventory_quantity: v.inventory_quantity,
         manage_inventory: true,
         allow_backorder: false,
@@ -1275,8 +1276,8 @@ export async function saveProductVariants(
           product_id: productId,
           title: v.title,
           sku: v.sku || null,
-          price: v.price,
-          compare_at_price: v.compare_at_price || null,
+          price: v.price ?? 0,
+          compare_at_price: v.compare_at_price ?? null,
           inventory_quantity: v.inventory_quantity,
           image_url: v.image_url || null,
           manage_inventory: true,
@@ -1297,8 +1298,8 @@ export async function saveProductVariants(
           product_id: productId,
           title: v.title,
           sku: v.sku || null,
-          price: v.price,
-          compare_at_price: v.compare_at_price || null,
+          price: v.price ?? 0,
+          compare_at_price: v.compare_at_price ?? null,
           inventory_quantity: v.inventory_quantity,
           image_url: v.image_url || null,
           manage_inventory: true,
@@ -1340,9 +1341,7 @@ export async function saveProductVariants(
 
   revalidatePath(`/admin/products/${productId}`)
   revalidatePath("/admin/products")
-  if (product?.handle) {
-    revalidatePath(`/products/${product.handle}`)
-  }
+  revalidateStorefrontProductPaths([product?.handle])
 }
 export async function deleteVariant(variantId: string) {
   await ensureAdmin()
@@ -1370,22 +1369,25 @@ export async function deleteVariant(variantId: string) {
       .single()
 
     revalidatePath(`/admin/products/${variant.product_id}`)
-    if (product?.handle) {
-      revalidatePath(`/products/${product.handle}`)
-    }
 
-    // Update total stock count on product
+    // Update total stock count and base price on product
     const { data: allVariants } = await supabase
       .from("product_variants")
-      .select("inventory_quantity")
+      .select("inventory_quantity, price")
       .eq("product_id", variant.product_id)
 
     const totalStock =
       allVariants?.reduce((sum, v) => sum + (v.inventory_quantity || 0), 0) || 0
+    const minPrice =
+      allVariants && allVariants.length > 0
+        ? Math.min(...allVariants.map((item) => item.price || 0))
+        : 0
     await supabase
       .from("products")
-      .update({ stock_count: totalStock })
+      .update({ stock_count: totalStock, price: minPrice })
       .eq("id", variant.product_id)
+
+    revalidateStorefrontProductPaths([product?.handle])
   }
   revalidatePath("/admin/products")
   revalidatePath("/admin/inventory")

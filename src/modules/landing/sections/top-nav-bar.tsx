@@ -4,18 +4,23 @@ import Link from "next/link"
 type NavItem = {
   label: string
   href: string
-  active?: boolean
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "About", href: "#about", active: true },
-  { label: "Products", href: "#products" },
-  { label: "Global Presence", href: "#global-presence" },
-  { label: "Infrastructure", href: "#infrastructure" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Products", href: "/products" },
+  { label: "Global Presence", href: "/#global-presence" },
+  { label: "Infrastructure", href: "/#infrastructure" },
+  { label: "Contact", href: "/#contact" },
 ]
 
-export default function TopNavBar() {
+type TopNavBarProps = {
+  activeLabel?: string
+}
+
+export default function TopNavBar({
+  activeLabel = "About",
+}: TopNavBarProps) {
   return (
     <nav className="glass-nav fixed top-0 z-50 w-full bg-white/80 shadow-sm">
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-8 py-4">
@@ -32,26 +37,26 @@ export default function TopNavBar() {
 
         <div className="hidden items-center gap-8 md:flex">
           {NAV_ITEMS.map((item) => (
-            <a
+            <Link
               key={item.label}
               href={item.href}
               className={`apx-font-headline text-sm font-semibold uppercase tracking-wide transition-colors ${
-                item.active
+                item.label === activeLabel
                   ? "border-b-2 border-[var(--apx-primary)] pb-1 text-[var(--apx-primary)]"
                   : "text-zinc-600 hover:text-[var(--apx-primary)]"
               }`}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </div>
 
-        <a
-          href="#contact"
+        <Link
+          href="/#contact"
           className="ambient-shadow rounded-md bg-gradient-to-r from-[var(--apx-primary)] to-[var(--apx-primary-container)] px-6 py-2.5 text-sm font-semibold text-white transition-transform duration-200 ease-in-out hover:scale-95"
         >
           Request a Quote
-        </a>
+        </Link>
       </div>
     </nav>
   )
