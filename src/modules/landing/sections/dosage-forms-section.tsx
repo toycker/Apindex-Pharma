@@ -1,32 +1,40 @@
-import { MaterialSymbolIcon } from "@modules/landing/components/material-symbol-icon"
+import type { IconType } from "react-icons"
+import {
+  MdColorize,
+  MdMedicalServices,
+  MdMedication,
+  MdSanitizer,
+  MdScience,
+  MdVaccines,
+} from "react-icons/md"
 
 type IconTone = "primary" | "secondary"
 
 type DosageCard = {
-  icon: string
+  icon: IconType
   title: string
   iconTone: IconTone
   borderTone?: IconTone
 }
 
 const DOSAGE_CARDS: DosageCard[] = [
-  { icon: "pill", title: "Tablets", iconTone: "primary" },
+  { icon: MdMedication, title: "Tablets", iconTone: "primary" },
   {
-    icon: "medical_services",
+    icon: MdMedicalServices,
     title: "Capsules",
     iconTone: "secondary",
     borderTone: "secondary",
   },
-  { icon: "colorize", title: "Eye/Ear Drops", iconTone: "primary" },
+  { icon: MdColorize, title: "Eye/Ear Drops", iconTone: "primary" },
   {
-    icon: "vaccines",
+    icon: MdVaccines,
     title: "Injections",
     iconTone: "primary",
     borderTone: "primary",
   },
-  { icon: "sanitizer", title: "Creams", iconTone: "secondary" },
+  { icon: MdSanitizer, title: "Creams", iconTone: "secondary" },
   {
-    icon: "science",
+    icon: MdScience,
     title: "Dry Syrups",
     iconTone: "secondary",
     borderTone: "secondary",
@@ -68,26 +76,30 @@ export default function DosageFormsSection() {
         </div>
 
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-6">
-          {DOSAGE_CARDS.map((card) => (
-            <div
-              key={card.title}
-              className={`ambient-shadow group flex flex-col items-center rounded-xl bg-[var(--apx-surface-container-lowest)] p-8 text-center transition-transform duration-300 hover:-translate-y-2 ${
-                card.borderTone ? BORDER_CLASS[card.borderTone] : ""
-              }`}
-            >
+          {DOSAGE_CARDS.map((card) => {
+            const Icon = card.icon
+
+            return (
               <div
-                className={`mb-6 flex h-16 w-16 items-center justify-center rounded-full transition-colors ${ICON_CONTAINER_CLASS[card.iconTone]}`}
+                key={card.title}
+                className={`ambient-shadow group flex flex-col items-center rounded-xl bg-[var(--apx-surface-container-lowest)] p-8 text-center transition-transform duration-300 hover:-translate-y-2 ${
+                  card.borderTone ? BORDER_CLASS[card.borderTone] : ""
+                }`}
               >
-                <MaterialSymbolIcon
-                  name={card.icon}
-                  className={`text-3xl ${ICON_TEXT_CLASS[card.iconTone]}`}
-                />
+                <div
+                  className={`mb-6 flex h-16 w-16 items-center justify-center rounded-full transition-colors ${ICON_CONTAINER_CLASS[card.iconTone]}`}
+                >
+                  <Icon
+                    aria-hidden="true"
+                    className={`text-3xl ${ICON_TEXT_CLASS[card.iconTone]}`}
+                  />
+                </div>
+                <h3 className="apx-font-headline font-bold text-[var(--apx-on-surface)]">
+                  {card.title}
+                </h3>
               </div>
-              <h3 className="apx-font-headline font-bold text-[var(--apx-on-surface)]">
-                {card.title}
-              </h3>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
