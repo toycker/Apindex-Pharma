@@ -1,0 +1,55 @@
+import { forwardRef, useImperativeHandle, useMemo, useRef } from "react"
+
+import NativeSelect, {
+  NativeSelectProps,
+} from "@modules/common/components/native-select"
+import { Region } from "@/lib/supabase/types"
+
+const CountrySelect = forwardRef<
+  HTMLSelectElement,
+  NativeSelectProps & {
+    region?: Region
+    label?: string
+  }
+>(({ placeholder = "Country", region, defaultValue, label: _label = "Country", required, ...props }, ref) => {
+  const innerRef = useRef<HTMLSelectElement>(null)
+
+  useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
+    ref,
+    () => innerRef.current
+  )
+
+  const countryOptions = useMemo(() => {
+    const options = region?.countries?.map((country) => ({
+      value: country.iso_2,
+      label: country.display_name,
+    })) || []
+
+    // Ensure India is always present even if region data is loading
+    if (!options.some(o => o.value === 'in')) {
+      options.unshift({ value: 'in', label: 'India' })
+    }
+
+    return options
+  }, [region])
+
+  return (
+    <NativeSelect
+      ref={innerRef}
+      placeholder={placeholder}
+      defaultValue={defaultValue || "in"}
+      required={required}
+      {...props}
+    >
+      {countryOptions?.map(({ value, label }, index) => (
+        <option key={index} value={value}>
+          {label}
+        </option>
+      ))}
+    </NativeSelect>
+  )
+})
+
+CountrySelect.displayName = "CountrySelect"
+
+export default CountrySelect

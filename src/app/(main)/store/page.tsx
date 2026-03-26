@@ -1,0 +1,59 @@
+import { Metadata } from "next"
+
+import {
+  AvailabilityFilter,
+  SortOptions,
+  ViewMode,
+} from "@modules/store/components/refinement-list/types"
+import StoreTemplate from "@modules/store/templates"
+import { sanitizePriceRange } from "@modules/store/utils/price-range"
+
+export const metadata: Metadata = {
+  title: "Store",
+  description: "Explore all of our products.",
+}
+
+export const revalidate = 60
+
+type Params = {
+  searchParams: Promise<{
+    sortBy?: SortOptions
+    page?: string
+    q?: string
+    availability?: AvailabilityFilter
+    price_min?: string
+    price_max?: string
+    age?: string
+    collection?: string
+    view?: ViewMode
+  }>
+}
+
+import { getClubSettings } from "@lib/data/club"
+
+export default async function StorePage(props: Params) {
+  const searchParams = await props.searchParams
+  const { sortBy, page, q, availability, price_min, price_max, age, collection, view } = searchParams
+
+  const clubSettings = await getClubSettings()
+
+  const parsedPriceRange = sanitizePriceRange({
+    min: price_min !== undefined ? Number(price_min) : undefined,
+    max: price_max !== undefined ? Number(price_max) : undefined,
+  })
+
+  return (
+    <StoreTemplate
+      sortBy={sortBy}
+      page={page}
+      countryCode="in"
+      searchQuery={q}
+      availability={availability}
+      priceRange={parsedPriceRange}
+      ageFilter={age}
+      collectionId={collection}
+      viewMode={view}
+      clubDiscountPercentage={clubSettings?.discount_percentage}
+    />
+  )
+}

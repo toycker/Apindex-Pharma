@@ -1,0 +1,27 @@
+import { Price } from "@/lib/supabase/types"
+
+export type FeaturedProduct = {
+  id: string
+  title: string
+  handle: string
+  thumbnail?: string
+}
+
+export type VariantPrice = {
+  calculated_price_number: number
+  calculated_price: string
+  original_price_number: number
+  original_price: string
+  currency_code: string
+  price_type: string
+  percentage_diff: string
+  is_discounted: boolean
+  club_price_number?: number
+  club_price?: string
+}
+
+export type StoreFreeShippingPrice = Price & {
+  target_reached: boolean
+  target_remaining: number
+  remaining_percentage: number
+}

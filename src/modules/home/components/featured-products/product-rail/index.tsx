@@ -1,0 +1,52 @@
+import { listProducts } from "@lib/data/products"
+import { Collection, Region } from "@/lib/supabase/types"
+import { Text } from "@modules/common/components/text"
+
+import InteractiveLink from "@modules/common/components/interactive-link"
+import ProductPreview from "@modules/products/components/product-preview"
+
+export default async function ProductRail({
+  collection,
+  region,
+  clubDiscountPercentage,
+}: {
+  collection: Collection
+  region: Region
+  clubDiscountPercentage?: number
+}) {
+  const {
+    response: { products: pricedProducts },
+  } = await listProducts({
+    regionId: region.id,
+    queryParams: {
+      collection_id: [collection.id],
+    },
+  })
+
+  if (!pricedProducts) {
+    return null
+  }
+
+  return (
+    <div className="content-container py-12 small:py-24">
+      <div className="flex justify-between mb-8">
+        <Text className="txt-xlarge">{collection.title}</Text>
+        <InteractiveLink href={`/collections/${collection.handle}`}>
+          View all
+        </InteractiveLink>
+      </div>
+      <ul className="grid grid-cols-2 small:grid-cols-3 gap-x-6 gap-y-24 small:gap-y-36">
+        {pricedProducts &&
+          pricedProducts.map((product) => (
+            <li key={product.id}>
+              <ProductPreview
+                product={product}
+                isFeatured
+                clubDiscountPercentage={clubDiscountPercentage}
+              />
+            </li>
+          ))}
+      </ul>
+    </div>
+  )
+}

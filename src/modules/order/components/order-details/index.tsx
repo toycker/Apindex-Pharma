@@ -1,0 +1,159 @@
+import { Order } from "@/lib/supabase/types"
+import { Text } from "@modules/common/components/text"
+
+type OrderDetailsProps = {
+  order: Order
+  customerPhone?: string | null
+  showStatus?: boolean
+}
+
+const OrderDetails = ({ order, customerPhone }: OrderDetailsProps) => {
+  const isCOD =
+    order.payment_method?.toLowerCase().includes("cod") ||
+    order.payment_method?.toLowerCase().includes("cash") ||
+    (order.metadata?.payment_method as string)?.toLowerCase() === "cod"
+
+  const rewardsEarned = (order.metadata?.rewards_earned as number) || 0
+
+  const rawPaymentStatus = (order.payment_status || "").toLowerCase()
+  const isOrderCancelled = order.status === "cancelled" || order.status === "failed"
+
+  const normalizedPaymentStatus = (() => {
+    if (isOrderCancelled && (rawPaymentStatus === "" || rawPaymentStatus === "pending" || rawPaymentStatus === "awaiting")) {
+      return "cancelled"
+    }
+    return rawPaymentStatus || (isOrderCancelled ? "cancelled" : "pending")
+  })()
+
+  const paymentTone =
+    normalizedPaymentStatus === "failed" || normalizedPaymentStatus === "cancelled"
+      ? "bg-red-100 text-red-700 border border-red-200"
+      : normalizedPaymentStatus === "refunded"
+        ? "bg-slate-100 text-slate-700 border border-slate-200"
+        : normalizedPaymentStatus === "pending"
+          ? "bg-amber-100 text-amber-700 border border-amber-200"
+          : "bg-emerald-100 text-emerald-700 border border-emerald-200"
+
+  const paymentLabel = isCOD
+    ? normalizedPaymentStatus === "paid" || normalizedPaymentStatus === "captured"
+      ? "Paid"
+      : normalizedPaymentStatus === "cancelled" || normalizedPaymentStatus === "failed"
+        ? "COD Cancelled"
+        : normalizedPaymentStatus === "refunded"
+          ? "COD Refunded"
+          : "COD Pending"
+    : normalizedPaymentStatus === "paid" || normalizedPaymentStatus === "captured"
+      ? "Paid"
+      : normalizedPaymentStatus === "cancelled" || normalizedPaymentStatus === "failed"
+        ? "Payment Cancelled"
+        : normalizedPaymentStatus === "refunded"
+          ? "Refunded"
+          : "Pending"
+
+  return (
+    <div className="flex flex-col gap-y-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col gap-y-1">
+          <p className="text-sm font-bold uppercase tracking-widest text-slate-400">
+            Confirmed To
+          </p>
+          <Text className="text-lg font-bold text-slate-900">
+            {order.customer_email || order.email}
+          </Text>
+          {customerPhone && (
+            <Text className="text-slate-500 font-medium">
+              {customerPhone}
+            </Text>
+          )}
+        </div>
+
+        <div className="flex flex-col md:items-end gap-y-1">
+          <p className="text-sm font-bold uppercase tracking-widest text-slate-400">
+            Order Status
+          </p>
+          <div className="flex items-center gap-x-2">
+            <span
+              className={`px-4 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-sm ${order.status === "delivered"
+                ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                : (order.status === "shipped" || order.status === "accepted")
+                  ? "bg-blue-100 text-blue-700 border border-blue-200"
+                  : (order.status === "cancelled" || order.status === "failed")
+                    ? "bg-red-100 text-red-700 border border-red-200"
+                    : "bg-amber-100 text-amber-700 border border-amber-200"
+                }`}
+            >
+              {(order.status === 'order_placed' || order.status === 'pending') ? 'New Order' :
+                order.status === 'accepted' ? 'Ready to Ship' :
+                  order.status === 'shipped' ? 'Shipped' :
+                    order.status === 'delivered' ? 'Delivered' :
+                      order.status === 'cancelled' ? 'Cancelled' :
+                        order.status === 'failed' ? 'Failed' :
+                          (order.status as string).charAt(0).toUpperCase() + (order.status as string).slice(1)}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:items-end gap-y-1">
+          <p className="text-sm font-bold uppercase tracking-widest text-slate-400">
+            Payment Status
+          </p>
+          <div className="flex items-center gap-x-2">
+            <span
+              className={`px-4 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-sm ${paymentTone}`}
+            >
+              {paymentLabel}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-6 items-center justify-between pb-6 border-b border-slate-100">
+        <div className="flex flex-col gap-y-1">
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
+            Order Date
+          </p>
+          <Text className="font-bold text-slate-800">
+            {new Date(order.created_at).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </Text>
+        </div>
+        <div className="flex flex-col md:items-end gap-y-1">
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
+            Order Number
+          </p>
+          <Text className="text-xl font-black text-blue-600 tracking-tight">
+            #{order.display_id}
+          </Text>
+        </div>
+      </div>
+
+      {rewardsEarned > 0 && (
+        <div className="group relative bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-6 overflow-hidden shadow-xl shadow-indigo-200 transition-all hover:scale-[1.01]">
+          {/* Animated background stars or sparkles could go here */}
+          <div className="absolute top-0 right-0 p-4 opacity-20 transform translate-x-4 -translate-y-4">
+            <span className="text-8xl">💎</span>
+          </div>
+
+          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4">
+            <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl shadow-inner group-hover:rotate-12 transition-transform">
+              🎁
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <h4 className="text-white font-black text-xl mb-0.5">
+                Premium Rewards Credited!
+              </h4>
+              <p className="text-indigo-100 font-medium">
+                You earned <span className="text-white font-black text-2xl mx-1 animate-pulse">{rewardsEarned}</span> reward points from this purchase.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default OrderDetails
