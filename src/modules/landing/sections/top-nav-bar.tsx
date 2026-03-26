@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-type NavPage = "home" | "about" | "contact"
+type NavPage = "home" | "about" | "contact" | "products"
 
 type NavItem = {
   label: string
@@ -9,31 +9,58 @@ type NavItem = {
   homeHref?: string
   aboutHref?: string
   contactHref?: string
+  productHref?: string
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "About", href: "/about", homeHref: "/about", contactHref: "/about" },
-  { label: "Products", href: "#products", aboutHref: "/#products", contactHref: "/#products" },
+  {
+    label: "About",
+    href: "/about",
+    homeHref: "/about",
+    contactHref: "/about",
+    productHref: "/about",
+  },
+  {
+    label: "Products",
+    href: "#products",
+    aboutHref: "/#products",
+    contactHref: "/#products",
+    productHref: "/products",
+  },
   {
     label: "Global Presence",
     href: "#global-presence",
     aboutHref: "#global-presence",
     contactHref: "/#global-presence",
+    productHref: "/#global-presence",
   },
   {
     label: "Infrastructure",
     href: "#infrastructure",
     aboutHref: "/#infrastructure",
     contactHref: "/#infrastructure",
+    productHref: "/#infrastructure",
   },
-  { label: "Contact", href: "/contact", aboutHref: "/contact", contactHref: "/contact" },
+  {
+    label: "Contact",
+    href: "/contact",
+    aboutHref: "/contact",
+    contactHref: "/contact",
+    productHref: "/contact",
+  },
 ]
 
 type TopNavBarProps = {
   currentPage?: NavPage
+  activeLabel?: string
 }
 
-export default function TopNavBar({ currentPage = "home" }: TopNavBarProps) {
+export default function TopNavBar({
+  currentPage = "home",
+  activeLabel,
+}: TopNavBarProps) {
+  const normalizedActiveLabel = activeLabel?.trim().toLowerCase() ?? null
+
   const resolveHref = (item: NavItem) => {
     if (currentPage === "about") {
       return item.aboutHref ?? item.href
@@ -43,7 +70,19 @@ export default function TopNavBar({ currentPage = "home" }: TopNavBarProps) {
       return item.contactHref ?? item.href
     }
 
+    if (currentPage === "products") {
+      return item.productHref ?? item.homeHref ?? item.href
+    }
+
     return item.homeHref ?? item.href
+  }
+
+  const isItemActive = (label: string) => {
+    if (normalizedActiveLabel) {
+      return label.toLowerCase() === normalizedActiveLabel
+    }
+
+    return currentPage !== "home" && label.toLowerCase() === currentPage
   }
 
   return (
@@ -66,7 +105,7 @@ export default function TopNavBar({ currentPage = "home" }: TopNavBarProps) {
               key={item.label}
               href={resolveHref(item)}
               className={`apx-font-headline text-sm font-semibold uppercase tracking-wide transition-colors ${
-                currentPage !== "home" && item.label.toLowerCase() === currentPage
+                isItemActive(item.label)
                   ? "border-b-2 border-[var(--apx-primary)] pb-1 text-[var(--apx-primary)]"
                   : "text-zinc-600 hover:text-[var(--apx-primary)]"
               }`}
@@ -76,12 +115,12 @@ export default function TopNavBar({ currentPage = "home" }: TopNavBarProps) {
           ))}
         </div>
 
-        <a
+        <Link
           href={currentPage === "contact" ? "#contact-form" : "/contact#contact-form"}
           className="ambient-shadow rounded-md bg-gradient-to-r from-[var(--apx-primary)] to-[var(--apx-primary-container)] px-6 py-2.5 text-sm font-semibold text-white transition-transform duration-200 ease-in-out hover:scale-95"
         >
           Request a Quote
-        </a>
+        </Link>
       </div>
     </nav>
   )

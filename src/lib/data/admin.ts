@@ -30,7 +30,16 @@ import {
 } from "@/lib/util/customer-email"
 import { resolveCustomerPhone } from "@/lib/util/customer-contact-phone"
 import { canEditOrderShippingAddress } from "@/lib/util/order-shipping-address-edit"
+import {
+  buildProductPharmaDetailsFromFormData,
+  mergeProductPharmaDetailsMetadata,
+} from "@/lib/util/product-pharma"
 import { DEFAULT_MANUAL_PRODUCT_STATUS } from "@/lib/util/product-visibility"
+import {
+  normalizeProductImage,
+  normalizeProductVariantImage,
+  resolveProductImageUrl,
+} from "@/lib/util/images"
 
 type EmailBackedRow = {
   email: string | null
@@ -110,6 +119,7 @@ function revalidateStorefrontProductPaths(
   )
 
   revalidatePath("/")
+  revalidatePath("/products")
   revalidatePath("/store")
   revalidatePath("/collections")
   revalidatePath("/categories")
@@ -417,7 +427,7 @@ export async function getAdminGlobalSearch(
       // Search Products
       supabase
         .from("products")
-        .select("id, name, handle, thumbnail")
+        .select("id, name, handle, thumbnail, image_url")
         .or(`name.ilike.%${normalizedQuery}%,handle.ilike.%${normalizedQuery}%`)
         .limit(5),
 
@@ -471,7 +481,9 @@ export async function getAdminGlobalSearch(
         subtitle: `Product • ${p.handle}`,
         type: "product",
         url: `/admin/products/${p.id}`,
-        thumbnail: p.thumbnail,
+        thumbnail:
+          resolveProductImageUrl(p.thumbnail) ??
+          resolveProductImageUrl((p as { image_url?: string | null }).image_url),
       })
     })
   }
@@ -826,26 +838,36 @@ export async function getAdminProducts(
   const { data, error } = await query
   if (error) throw error
 
-  const products = (data || []).map((product) => {
-    const variants = (product as any).variants || []
-    if (variants.length > 0) {
-      // If base price is 0, use min variant price
-      if (product.price === 0) {
-        product.price = Math.min(...variants.map((v: any) => v.price))
-      }
-      // If stock count is 0, use sum of variant stock
-      if (product.stock_count === 0) {
-        product.stock_count = variants.reduce(
-          (sum: number, v: any) => sum + (v.inventory_quantity || 0),
-          0
-        )
-      }
+  const products = ((data ?? []) as Product[]).map((product) => {
+    const normalizedProduct = normalizeProductImage(product)
+    const variants = normalizedProduct.variants ?? []
+
+    if (variants.length === 0) {
+      return normalizedProduct
     }
-    return product
+
+    const price =
+      normalizedProduct.price === 0
+        ? Math.min(...variants.map((variant) => variant.price))
+        : normalizedProduct.price
+
+    const stockCount =
+      normalizedProduct.stock_count === 0
+        ? variants.reduce(
+            (sum, variant) => sum + (variant.inventory_quantity || 0),
+            0
+          )
+        : normalizedProduct.stock_count
+
+    return {
+      ...normalizedProduct,
+      price,
+      stock_count: stockCount,
+    }
   })
 
   return {
-    products: products as Product[],
+    products,
     count: count || 0,
     totalPages,
     currentPage: page,
@@ -909,6 +931,7 @@ export async function createProduct(
   const compareAtPrice = formData.get("compare_at_price")
     ? parseFloat(formData.get("compare_at_price") as string)
     : null
+  const pharmaDetails = buildProductPharmaDetailsFromFormData(formData)
 
   const product = {
     name: formData.get("name") as string,
@@ -926,9 +949,12 @@ export async function createProduct(
       (formData.get("status") as Product["status"] | null) ||
       DEFAULT_MANUAL_PRODUCT_STATUS,
     currency_code: "inr",
-    metadata: {
-      compare_at_price: compareAtPrice,
-    },
+    metadata: mergeProductPharmaDetailsMetadata(
+      {
+        compare_at_price: compareAtPrice,
+      },
+      pharmaDetails
+    ),
     short_description: formData.get("short_description") as string,
     video_url: formData.get("video_url") as string,
     images: formData.get("images_json")
@@ -981,9 +1007,9 @@ export async function createProduct(
       const variantsToInsert = variantsData.map((v) => ({
         product_id: newProduct.id,
         title: v.title,
-        sku: v.sku,
-        price: v.price,
-        compare_at_price: v.compare_at_price,
+        sku: v.sku || null,
+        price: v.price ?? 0,
+        compare_at_price: v.compare_at_price ?? null,
         inventory_quantity: v.inventory_quantity,
         manage_inventory: true,
         allow_backorder: false,
@@ -1060,6 +1086,13 @@ export async function updateProduct(formData: FormData) {
     .eq("id", id)
     .single()
 
+  const currentMetadata =
+    currentProduct?.metadata &&
+    typeof currentProduct.metadata === "object" &&
+    !Array.isArray(currentProduct.metadata)
+      ? currentProduct.metadata
+      : {}
+
   const productPrice = formData.get("price")
     ? parseFloat(formData.get("price") as string)
     : currentProduct?.price || 0
@@ -1072,13 +1105,19 @@ export async function updateProduct(formData: FormData) {
   const newImageUrl = formData.get("image_url") as string
   const imageUrlChanged = newImageUrl !== currentProduct?.image_url
   const updatedHandle = formData.get("handle") as string
+  const pharmaDetails = buildProductPharmaDetailsFromFormData(formData)
 
-  const metadata = {
-    ...(currentProduct?.metadata || {}),
-    compare_at_price: formData.get("compare_at_price")
-      ? parseFloat(formData.get("compare_at_price") as string)
-      : currentProduct?.metadata?.compare_at_price || null,
-  }
+  const metadata = mergeProductPharmaDetailsMetadata(
+    {
+      ...currentMetadata,
+      compare_at_price: formData.get("compare_at_price")
+        ? parseFloat(formData.get("compare_at_price") as string)
+        : typeof currentMetadata.compare_at_price === "number"
+          ? currentMetadata.compare_at_price
+          : null,
+    },
+    pharmaDetails
+  )
   delete metadata.short_description
 
   const updates: Record<string, unknown> & { handle: string } = {
@@ -1252,7 +1291,7 @@ export async function getProductVariants(productId: string) {
     .order("created_at")
 
   if (error) throw error
-  return data as ProductVariant[]
+  return ((data ?? []) as ProductVariant[]).map(normalizeProductVariantImage)
 }
 
 export async function saveProductVariants(
@@ -1275,8 +1314,8 @@ export async function saveProductVariants(
           product_id: productId,
           title: v.title,
           sku: v.sku || null,
-          price: v.price,
-          compare_at_price: v.compare_at_price || null,
+          price: v.price ?? 0,
+          compare_at_price: v.compare_at_price ?? null,
           inventory_quantity: v.inventory_quantity,
           image_url: v.image_url || null,
           manage_inventory: true,
@@ -1297,8 +1336,8 @@ export async function saveProductVariants(
           product_id: productId,
           title: v.title,
           sku: v.sku || null,
-          price: v.price,
-          compare_at_price: v.compare_at_price || null,
+          price: v.price ?? 0,
+          compare_at_price: v.compare_at_price ?? null,
           inventory_quantity: v.inventory_quantity,
           image_url: v.image_url || null,
           manage_inventory: true,
@@ -1340,9 +1379,7 @@ export async function saveProductVariants(
 
   revalidatePath(`/admin/products/${productId}`)
   revalidatePath("/admin/products")
-  if (product?.handle) {
-    revalidatePath(`/products/${product.handle}`)
-  }
+  revalidateStorefrontProductPaths([product?.handle])
 }
 export async function deleteVariant(variantId: string) {
   await ensureAdmin()
@@ -1370,22 +1407,25 @@ export async function deleteVariant(variantId: string) {
       .single()
 
     revalidatePath(`/admin/products/${variant.product_id}`)
-    if (product?.handle) {
-      revalidatePath(`/products/${product.handle}`)
-    }
 
-    // Update total stock count on product
+    // Update total stock count and base price on product
     const { data: allVariants } = await supabase
       .from("product_variants")
-      .select("inventory_quantity")
+      .select("inventory_quantity, price")
       .eq("product_id", variant.product_id)
 
     const totalStock =
       allVariants?.reduce((sum, v) => sum + (v.inventory_quantity || 0), 0) || 0
+    const minPrice =
+      allVariants && allVariants.length > 0
+        ? Math.min(...allVariants.map((item) => item.price || 0))
+        : 0
     await supabase
       .from("products")
-      .update({ stock_count: totalStock })
+      .update({ stock_count: totalStock, price: minPrice })
       .eq("id", variant.product_id)
+
+    revalidateStorefrontProductPaths([product?.handle])
   }
   revalidatePath("/admin/products")
   revalidatePath("/admin/inventory")
@@ -3664,3 +3704,5 @@ export async function deleteAdminCustomerAddress(addressId: string) {
   }
   revalidatePath("/admin/customers")
 }
+
+

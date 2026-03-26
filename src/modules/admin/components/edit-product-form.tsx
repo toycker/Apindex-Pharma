@@ -21,6 +21,8 @@ import { getYoutubeId, getYoutubeEmbedUrl } from "@/lib/util/youtube"
 import { Tag, Globe, Layers, Edit2, Link2, Link2Off } from "lucide-react"
 import { slugify } from "@/lib/util/slug"
 import DeleteProductButton from "./delete-product-button"
+import ProductPharmaDetailsFields from "./product-pharma-details-fields"
+import { getProductPharmaDetails } from "@/lib/util/product-pharma"
 import { isStorefrontVisibleProduct } from "@/lib/util/product-visibility"
 
 type EditProductFormProps = {
@@ -54,12 +56,13 @@ export default function EditProductForm({
   const [isEditingHandle, setIsEditingHandle] = useState(false)
   const [isHandleManuallyEdited, setIsHandleManuallyEdited] = useState(false)
   const canViewInStore = isStorefrontVisibleProduct(product.status)
+  const catalogPreviewHref = `/products/${encodeURIComponent(product.handle)}`
   const storefrontStatusMessage =
     product.status === "active"
-      ? "This product is live on your storefront."
+      ? "This product is live in your public catalog."
       : product.status === "draft"
-        ? "This product is hidden from customers until you mark it active."
-        : "This product is archived and hidden from customers."
+        ? "This product is hidden from the public catalog until you mark it active."
+        : "This product is archived and hidden from the public catalog."
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value
@@ -83,6 +86,10 @@ export default function EditProductForm({
     handle: rc.related_product.handle,
     thumbnail: rc.related_product.image_url
   })) || [], [product.related_combinations])
+  const pharmaDetails = useMemo(
+    () => getProductPharmaDetails(product.metadata),
+    [product.metadata]
+  )
 
   return (
     <form action={updateProduct}>
@@ -149,21 +156,21 @@ export default function EditProductForm({
           <div className="flex gap-2 shrink-0">
             {canViewInStore ? (
               <a
-                href={`/products/${product.handle}`}
+                href={catalogPreviewHref}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-sm font-bold rounded-lg hover:bg-white hover:border-gray-400 transition-all"
               >
                 <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-                View in store
+                View in catalog
               </a>
             ) : (
               <span
                 className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 text-sm font-bold text-gray-400 rounded-lg cursor-not-allowed"
-                title="Only active products can be viewed in store."
+                title="Only active products can be viewed in the public catalog."
               >
                 <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-                View in store
+                View in catalog
               </span>
             )}
             <SubmitButton className="inline-flex items-center px-5 py-2 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-all shadow-sm">
@@ -229,6 +236,10 @@ export default function EditProductForm({
             </div>
           </AdminCard>
 
+          <AdminCard title="Pharma Details">
+            <ProductPharmaDetailsFields details={pharmaDetails} />
+          </AdminCard>
+
           <AdminCard title="YouTube Video">
             <div className="space-y-4">
               <p className="text-xs text-gray-500 mb-2">
@@ -275,7 +286,7 @@ export default function EditProductForm({
                 <PackageIcon className={cn("w-6 h-6", productType === "single" ? "text-black" : "text-gray-300")} />
                 <div>
                   <p className="text-sm font-bold uppercase tracking-tight">Single Product</p>
-                  <p className="text-[10px] opacity-70">One price, fixed inventory</p>
+                  <p className="text-[10px] opacity-70">Single catalog item with fixed inventory</p>
                 </div>
               </button>
               <button
@@ -291,7 +302,7 @@ export default function EditProductForm({
                 <LayersIcon className={cn("w-6 h-6", productType === "variant" ? "text-black" : "text-gray-300")} />
                 <div>
                   <p className="text-sm font-bold uppercase tracking-tight">Variant-based</p>
-                  <p className="text-[10px] opacity-70">Multiple sizes, colors, or prices</p>
+                  <p className="text-[10px] opacity-70">Multiple sizes, pack styles, or stock lines</p>
                 </div>
               </button>
             </div>
@@ -409,40 +420,20 @@ export default function EditProductForm({
           </AdminCard>
 
           {productType === "single" && (
-            <>
-              <AdminCard title="Pricing">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Price</label>
-                      <div className="relative">
-                        <span className="absolute left-3 top-2.5 text-gray-400 font-bold text-sm">₹</span>
-                        <input name="price" type="number" step="0.01" defaultValue={product.price} required className="w-full rounded-lg border border-gray-300 pl-7 pr-4 py-2.5 text-sm font-black focus:border-black focus:ring-0" />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Compare at</label>
-                      <div className="relative">
-                        <span className="absolute left-3 top-2.5 text-gray-400 font-bold text-sm">₹</span>
-                        <input name="compare_at_price" type="number" step="0.01" defaultValue={product.metadata?.compare_at_price as number || ""} className="w-full rounded-lg border border-gray-300 pl-7 pr-4 py-2.5 text-sm font-medium focus:border-black focus:ring-0" />
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-[10px] text-gray-400 font-medium italic">To show a reduced price, move the original price into &quot;Compare at price&quot;.</p>
+            <AdminCard title="Inventory">
+              <div className="space-y-4">
+                <p className="text-xs font-medium leading-relaxed text-gray-500">
+                  Pricing is hidden for catalogue enquiries. Use inventory to manage
+                  availability for this product.
+                </p>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+                    Base Stock
+                  </label>
+                  <input name="stock_count" type="number" defaultValue={product.stock_count} required className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold focus:border-black focus:ring-0" />
                 </div>
-              </AdminCard>
-
-              <AdminCard title="Inventory">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
-                      Base Stock
-                    </label>
-                    <input name="stock_count" type="number" defaultValue={product.stock_count} required className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold focus:border-black focus:ring-0" />
-                  </div>
-                </div>
-              </AdminCard>
-            </>
+              </div>
+            </AdminCard>
           )}
 
           <AdminCard title="Organization">
@@ -492,21 +483,21 @@ export default function EditProductForm({
       <div className="flex justify-end gap-2 mt-6">
         {canViewInStore ? (
           <a
-            href={`/products/${product.handle}`}
+            href={catalogPreviewHref}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-sm font-bold rounded-lg hover:bg-white hover:border-gray-400 transition-all"
           >
             <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-            View in store
+            View in catalog
           </a>
         ) : (
           <span
             className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 text-sm font-bold text-gray-400 rounded-lg cursor-not-allowed"
-            title="Only active products can be viewed in store."
+            title="Only active products can be viewed in the public catalog."
           >
             <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-            View in store
+            View in catalog
           </span>
         )}
         <ProtectedAction permission={PERMISSIONS.PRODUCTS_DELETE} hideWhenDisabled>
@@ -525,3 +516,5 @@ export default function EditProductForm({
     </form>
   )
 }
+
+

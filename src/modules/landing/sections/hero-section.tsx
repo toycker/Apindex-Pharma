@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 const HERO_IMAGE_URL =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuB9OeoJelP19gJ61a_CZc1AphOtugOZk73qmzACyIZcGDDHK5HgS-rxwuWfZ-NO6NYL0T19uOgtnbKrkK2Z9ycu116q7Rt9PjpiKZGVoZeL-KGt-7qsTKYy5p34dpUEtwHkU-RMF3mDfX0J97K_NA8OrH_EXsncoXpkCfn7KS0QFI2vMYbdEVT78X2sONELE1qFEMXtdaf_hp_ILmfTauyBYiqKlRY9bvz-fRZQaFyAiUj7jk38ipwTrxQ5pelo6SIEA4lGmmrgFYU"
@@ -32,18 +33,18 @@ export default function HeroSection() {
             precision chemistry and editorial-grade manufacturing standards.
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
-            <a
-              href="#products"
+            <Link
+              href="/products"
               className="ambient-shadow rounded-xl bg-gradient-to-r from-[var(--apx-primary)] to-[var(--apx-primary-container)] px-8 py-4 font-bold text-white transition-transform hover:scale-95"
             >
               Explore Our Products
-            </a>
-            <a
+            </Link>
+            <Link
               href="/contact#contact-form"
               className="ambient-shadow rounded-xl bg-[var(--apx-secondary)] px-8 py-4 font-bold text-white transition-transform hover:scale-95"
             >
               Request a Quote
-            </a>
+            </Link>
           </div>
         </div>
       </div>

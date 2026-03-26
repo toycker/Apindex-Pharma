@@ -14,6 +14,7 @@ import { PhotoIcon } from "@heroicons/react/24/outline"
 import { COLOR_SWATCH_MAP, STANDARD_COLORS } from "@/lib/constants/colors"
 import CategoryCheckboxList from "./category-checkbox-list"
 import MediaGallery from "./media-manager"
+import ProductPharmaDetailsFields from "./product-pharma-details-fields"
 import { slugify } from "@/lib/util/slug"
 import { DEFAULT_MANUAL_PRODUCT_STATUS } from "@/lib/util/product-visibility"
 import { useToast } from "@modules/common/context/toast-context"
@@ -21,6 +22,21 @@ import { useToast } from "@modules/common/context/toast-context"
 type NewProductFormProps = {
   collections: Collection[]
   categories: Category[]
+}
+
+type VariantOptionForm = {
+  title: string
+  values: string[]
+}
+
+function buildVariantCombinations(options: VariantOptionForm[]): string[][] {
+  return options.reduce<string[][]>(
+    (combinations, option) =>
+      combinations.flatMap((combination) =>
+        option.values.map((value) => [...combination, value])
+      ),
+    [[]]
+  )
 }
 
 export default function NewProductForm({ collections, categories }: NewProductFormProps) {
@@ -35,8 +51,8 @@ export default function NewProductForm({ collections, categories }: NewProductFo
   const videoId = getYoutubeId(videoUrl)
   const embedUrl = getYoutubeEmbedUrl(videoId)
 
-  const [options, setOptions] = useState<{ title: string; values: string[] }[]>([
-    { title: "Color", values: [] }
+  const [options, setOptions] = useState<VariantOptionForm[]>([
+    { title: "Pack", values: [] }
   ])
   const [openPickerIndex, setOpenPickerIndex] = useState<number | null>(null)
 
@@ -95,24 +111,31 @@ export default function NewProductForm({ collections, categories }: NewProductFo
     setVariants(newVariants)
   }
 
-  const handleVariantChange = (index: number, field: keyof VariantFormData, value: any) => {
+  const handleVariantChange = (
+    index: number,
+    field: keyof VariantFormData,
+    value: VariantFormData[keyof VariantFormData]
+  ) => {
     const newVariants = [...variants]
     newVariants[index] = { ...newVariants[index], [field]: value }
     setVariants(newVariants)
   }
 
-  const handleUpdateOption = (idx: number, field: string, value: any) => {
+  const handleUpdateOption = (
+    idx: number,
+    field: keyof VariantOptionForm,
+    value: VariantOptionForm[keyof VariantOptionForm]
+  ) => {
     const nextOptions = [...options]
     let processedValue = value
 
     // Auto-capitalize values if it's the values field
     if (field === "values" && Array.isArray(value)) {
-      processedValue = value.map(v =>
-        typeof v === "string" ? v.toUpperCase() : v
+      processedValue = value.map((optionValue) =>
+        typeof optionValue === "string" ? optionValue.toUpperCase() : optionValue
       )
     }
 
-    // @ts-ignore
     nextOptions[idx] = { ...nextOptions[idx], [field]: processedValue }
     setOptions(nextOptions)
   }
@@ -124,15 +147,12 @@ export default function NewProductForm({ collections, categories }: NewProductFo
   }
 
   const handleGenerate = () => {
-    const validOptions = options.filter(o => o.title && o.values.length > 0)
+    const validOptions = options.filter((option) => option.title && option.values.length > 0)
     if (validOptions.length === 0) return
 
-    const cartesian = (...a: any[]) => a.reduce((a, b) => a.flatMap((d: any) => b.map((e: any) => [d, e].flat())))
-    const combinations = validOptions.length === 1
-      ? validOptions[0].values.map(v => [v])
-      : cartesian(...validOptions.map(o => o.values))
+    const combinations = buildVariantCombinations(validOptions)
 
-    const newVariants: VariantFormData[] = combinations.map((combo: string[]) => {
+    const newVariants: VariantFormData[] = combinations.map((combo) => {
       const title = combo.join(" / ")
       return {
         title,
@@ -179,7 +199,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                 <input
                   name="name"
                   type="text"
-                  placeholder="e.g. 1:16 Racing Sport Mood Car"
+                  placeholder="e.g. Amoxicillin 500 mg Tablets"
                   required
                   value={name}
                   onChange={handleNameChange}
@@ -268,6 +288,10 @@ export default function NewProductForm({ collections, categories }: NewProductFo
           </div>
         </AdminCard>
 
+        <AdminCard title="Pharma Details">
+          <ProductPharmaDetailsFields />
+        </AdminCard>
+
         <AdminCard title="YouTube Video">
           <div className="space-y-4">
             <p className="text-xs text-gray-500 mb-2">
@@ -314,7 +338,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
               <Package className={cn("w-6 h-6", productType === "single" ? "text-black" : "text-gray-300")} />
               <div>
                 <p className="text-sm font-bold uppercase tracking-tight">Single Product</p>
-                <p className="text-[10px] opacity-70">One price, fixed inventory</p>
+                <p className="text-[10px] opacity-70">Single catalog item with fixed inventory</p>
               </div>
             </button>
             <button
@@ -333,7 +357,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
               <Layers className={cn("w-6 h-6", productType === "variant" ? "text-black" : "text-gray-300")} />
               <div>
                 <p className="text-sm font-bold uppercase tracking-tight">Variant-based</p>
-                <p className="text-[10px] opacity-70">Multiple sizes, colors, or prices</p>
+                <p className="text-[10px] opacity-70">Multiple sizes, pack styles, or stock lines</p>
               </div>
             </button>
           </div>
@@ -364,7 +388,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                       <div className="w-full md:w-1/3">
                         <input
                           type="text"
-                          placeholder="Option Title (e.g. Size)"
+                          placeholder="Option Title (e.g. Strength)"
                           value={opt.title}
                           onChange={(e) => handleUpdateOption(idx, "title", e.target.value)}
                           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium focus:border-black focus:ring-0 transition-all bg-gray-50/30"
@@ -373,7 +397,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                       <div className="flex-1 w-full relative group/val">
                         <input
                           type="text"
-                          placeholder="Values (comma separated: S, M, L)"
+                          placeholder="Values (comma separated: 250 mg, 500 mg)"
                           value={opt.values.join(", ")}
                           onChange={(e) => handleUpdateOption(idx, "values", e.target.value.split(",").map(v => v.trim()).filter(Boolean))}
                           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium focus:border-black focus:ring-0 transition-all bg-gray-50/30"
@@ -460,42 +484,23 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                 </div>
               </div>
 
-              {/* Bulk Actions */}
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const price = prompt("Enter selling price for all variants:")
-                    if (price === null) return
-                    const p = parseFloat(price)
-                    if (isNaN(p)) return
-                    setVariants(variants.map(v => ({ ...v, price: p })))
-                  }}
-                  className="text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 rounded-md hover:border-gray-300 transition-all"
-                >
-                  Set all prices
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const price = prompt("Enter MRP (Compare at Price) for all variants:")
-                    if (price === null) return
-                    const p = parseFloat(price)
-                    if (isNaN(p)) return
-                    setVariants(variants.map(v => ({ ...v, compare_at_price: p })))
-                  }}
-                  className="text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 rounded-md hover:border-gray-300 transition-all"
-                >
-                  Set all MRP
-                </button>
+              <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+                <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-gray-500">
+                  Pricing is hidden for enquiry-only catalogue variants.
+                </p>
                 <button
                   type="button"
                   onClick={() => {
                     const quantity = prompt("Enter stock quantity for all variants:")
                     if (quantity === null) return
-                    const q = parseInt(quantity)
-                    if (isNaN(q)) return
-                    setVariants(variants.map(v => ({ ...v, inventory_quantity: q })))
+                    const parsedQuantity = parseInt(quantity, 10)
+                    if (Number.isNaN(parsedQuantity)) return
+                    setVariants(
+                      variants.map((variant) => ({
+                        ...variant,
+                        inventory_quantity: parsedQuantity,
+                      }))
+                    )
                   }}
                   className="text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 rounded-md hover:border-gray-300 transition-all"
                 >
@@ -510,9 +515,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                       <th className="px-4 py-4 w-[60px]">Media</th>
                       <th className="px-4 py-4 min-w-[150px]">Title / Option</th>
                       <th className="px-4 py-4 w-[120px]">SKU</th>
-                      <th className="px-4 py-4 w-[110px] text-right">Price</th>
-                      <th className="px-4 py-4 w-[110px] text-right">MRP</th>
-                      <th className="px-4 py-4 w-[80px] text-right">Stock</th>
+                      <th className="px-4 py-4 w-[96px] text-right">Stock</th>
                       <th className="px-4 py-4 w-[40px]"></th>
                     </tr>
                   </thead>
@@ -529,7 +532,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                           <input
                             type="text"
                             className="w-full bg-transparent border-none rounded-md text-sm font-semibold focus:ring-0 placeholder:text-gray-300"
-                            placeholder="e.g. Red / Large"
+                            placeholder="e.g. 10 x 10 Blister"
                             value={variant.title}
                             onChange={(e) => handleVariantChange(index, "title", e.target.value)}
                             required
@@ -545,37 +548,18 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                           />
                         </td>
                         <td className="p-2">
-                          <div className="flex items-center justify-end">
-                            <span className="text-gray-400 mr-1 font-bold">₹</span>
-                            <input
-                              type="number"
-                              className="w-16 bg-transparent border-none rounded-md text-sm font-black text-right focus:ring-0"
-                              placeholder="0"
-                              value={variant.price || ""}
-                              onChange={(e) => handleVariantChange(index, "price", e.target.value === "" ? 0 : parseFloat(e.target.value))}
-                              required
-                            />
-                          </div>
-                        </td>
-                        <td className="p-2">
-                          <div className="flex items-center justify-end">
-                            <span className="text-gray-400 mr-1 font-medium">₹</span>
-                            <input
-                              type="number"
-                              className="w-16 bg-transparent border-none rounded-md text-sm font-medium text-gray-500 text-right focus:ring-0"
-                              placeholder="0"
-                              value={variant.compare_at_price || ""}
-                              onChange={(e) => handleVariantChange(index, "compare_at_price", e.target.value === "" ? null : parseFloat(e.target.value))}
-                            />
-                          </div>
-                        </td>
-                        <td className="p-2">
                           <input
                             type="number"
                             className="w-full bg-transparent border-none rounded-md text-sm font-bold text-right focus:ring-0"
                             placeholder="0"
                             value={variant.inventory_quantity || ""}
-                            onChange={(e) => handleVariantChange(index, "inventory_quantity", e.target.value === "" ? 0 : parseInt(e.target.value))}
+                            onChange={(e) =>
+                              handleVariantChange(
+                                index,
+                                "inventory_quantity",
+                                e.target.value === "" ? 0 : parseInt(e.target.value, 10)
+                              )
+                            }
                             required
                           />
                         </td>
@@ -592,7 +576,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
                     ))}
                     {variants.length === 0 && (
                       <tr>
-                        <td colSpan={7} className="p-12 text-center text-gray-300 italic">
+                        <td colSpan={5} className="p-12 text-center text-gray-300 italic">
                           No variants defined. Use the generator above or add manually.
                         </td>
                       </tr>
@@ -710,36 +694,26 @@ export default function NewProductForm({ collections, categories }: NewProductFo
         </AdminCard>
 
         {productType === "single" && (
-          <>
-            <AdminCard title="Pricing">
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Price</label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-gray-400 font-bold text-sm">₹</span>
-                      <input name="price" type="number" step="0.01" placeholder="0.00" required={productType === "single"} className="w-full rounded-lg border border-gray-300 pl-7 pr-4 py-2.5 text-sm font-black focus:border-black focus:ring-0" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Compare at</label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-gray-400 font-bold text-sm">₹</span>
-                      <input name="compare_at_price" type="number" step="0.01" placeholder="0.00" className="w-full rounded-lg border border-gray-300 pl-7 pr-4 py-2.5 text-sm font-medium focus:border-black focus:ring-0" />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-[10px] text-gray-400 font-medium italic leading-tight">To show a reduced price, move the original price into &quot;Compare at price&quot;.</p>
-              </div>
-            </AdminCard>
-
-            <AdminCard title="Inventory Control">
+          <AdminCard title="Inventory">
+            <div className="space-y-4">
+              <p className="text-xs font-medium leading-relaxed text-gray-500">
+                Pricing is hidden for catalogue enquiries. Use inventory to manage
+                availability for this product.
+              </p>
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Opening Stock</label>
-                <input name="stock_count" type="number" placeholder="0" required={productType === "single"} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold focus:border-black focus:ring-0" />
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+                  Opening Stock
+                </label>
+                <input
+                  name="stock_count"
+                  type="number"
+                  placeholder="0"
+                  required={productType === "single"}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold focus:border-black focus:ring-0"
+                />
               </div>
-            </AdminCard>
-          </>
+            </div>
+          </AdminCard>
         )}
 
         {productType === "variant" && (
@@ -749,7 +723,7 @@ export default function NewProductForm({ collections, categories }: NewProductFo
               Managed via Variants
             </h4>
             <p className="text-[10px] text-yellow-700 font-medium leading-relaxed">
-              Base price and total stock will be automatically calculated from your variant list.
+              Variant labels and total stock will be managed from the list above for this catalogue entry.
             </p>
           </div>
         )}
@@ -798,4 +772,5 @@ export default function NewProductForm({ collections, categories }: NewProductFo
     </form >
   )
 }
+
 

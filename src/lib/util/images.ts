@@ -1,42 +1,118 @@
-import { Product } from "@/lib/supabase/types/index"
+import type {
+  Product,
+  ProductImage,
+  ProductVariant,
+} from "@/lib/supabase/types/index"
 
-export const CDN_URL =
-  process.env.NEXT_PUBLIC_R2_PUBLIC_URL ||
-  `https://${process.env.NEXT_PUBLIC_R2_MEDIA_HOSTNAME || "cdn.toycker.in"}`
+export const PRODUCT_MEDIA_CONFIG_ERROR =
+  "Product images require NEXT_PUBLIC_R2_PUBLIC_URL to be set to your public R2/CDN URL."
 
-export const fixUrl = (url: string | null | undefined) => {
-  if (!url) return null
-  let trimmed = url.trim()
+function trimTrailingSlashes(value: string): string {
+  return value.replace(/\/+$/, "")
+}
 
-  // If it's a legacy toycker.in absolute URL, strip the domain so we can prepend CDN_URL
-  if (trimmed.includes("toycker.in/uploads/")) {
-    const parts = trimmed.split("toycker.in/")
-    if (parts.length > 1) {
-      trimmed = parts[1]
-    }
+function trimLeadingSlashes(value: string): string {
+  return value.replace(/^\/+/, "")
+}
+
+function isAbsoluteUrl(value: string): boolean {
+  return /^https?:\/\//i.test(value)
+}
+
+function normalizeLegacyUrl(value: string): string {
+  const trimmedValue = value.trim()
+
+  if (!trimmedValue) {
+    return ""
   }
 
-  if (trimmed.startsWith("http")) return trimmed
-
-  // Remove all leading slashes to prevent relative path bugs (/uploads/... -> cdn.com/uploads/...)
-  let cleanPath = trimmed
-  while (cleanPath.startsWith("/")) {
-    cleanPath = cleanPath.substring(1)
+  if (/^https?:\/\/(?:www\.)?toycker\.in\/uploads\//i.test(trimmedValue)) {
+    const [, path = ""] = trimmedValue.split(/toycker\.in\//i)
+    return path
   }
 
-  if (!cleanPath) return null
+  return trimmedValue
+}
 
-  // Safely join baseUrl and cleanPath without double slashes
-  const baseUrl = CDN_URL.endsWith("/") ? CDN_URL.slice(0, -1) : CDN_URL
+export function getProductMediaBaseUrl(): string | null {
+  const publicUrl = process.env.NEXT_PUBLIC_R2_PUBLIC_URL?.trim()
+
+  if (!publicUrl) {
+    return null
+  }
+
+  return trimTrailingSlashes(publicUrl)
+}
+
+export function buildProductFileUrl(key: string): string {
+  const baseUrl = getProductMediaBaseUrl()
+  const cleanKey = trimLeadingSlashes(key.trim())
+
+  if (!baseUrl) {
+    throw new Error(PRODUCT_MEDIA_CONFIG_ERROR)
+  }
+
+  if (!cleanKey) {
+    throw new Error("Cannot build a product image URL without a storage key.")
+  }
+
+  return `${baseUrl}/${cleanKey}`
+}
+
+export function resolveProductImageUrl(
+  url: string | null | undefined
+): string | null {
+  if (!url) {
+    return null
+  }
+
+  const normalizedUrl = normalizeLegacyUrl(url)
+  if (!normalizedUrl) {
+    return null
+  }
+
+  if (isAbsoluteUrl(normalizedUrl)) {
+    return normalizedUrl
+  }
+
+  const cleanPath = trimLeadingSlashes(normalizedUrl)
+  if (!cleanPath) {
+    return null
+  }
+
+  const baseUrl = getProductMediaBaseUrl()
+  if (!baseUrl) {
+    return null
+  }
+
   return `${baseUrl}/${cleanPath}`
 }
 
-export const normalizeProductImage = (product: Product): Product => {
+export const fixUrl = resolveProductImageUrl
+
+export function normalizeProductVariantImage(
+  variant: ProductVariant
+): ProductVariant {
+  return {
+    ...variant,
+    image_url: resolveProductImageUrl(variant.image_url),
+  }
+}
+
+function collectProductImages(product: Product): string[] {
   const rawImages: string[] = []
+
   if (Array.isArray(product.images)) {
-    product.images.forEach((img: string | { url: string }) => {
-      if (typeof img === "string") rawImages.push(img)
-      else if (typeof img === "object" && img?.url) rawImages.push(img.url)
+    product.images.forEach((image: string | ProductImage) => {
+      if (typeof image === "string") {
+        rawImages.push(image)
+        return
+      }
+
+      const imageUrl = image?.url?.trim()
+      if (imageUrl) {
+        rawImages.push(imageUrl)
+      }
     })
   }
 
@@ -44,18 +120,37 @@ export const normalizeProductImage = (product: Product): Product => {
     rawImages.unshift(product.image_url)
   }
 
-  const cleanedImages = rawImages
-    .map((url) => fixUrl(url))
-    .filter((url): url is string => !!url)
+  if (product.thumbnail && !rawImages.includes(product.thumbnail)) {
+    rawImages.unshift(product.thumbnail)
+  }
 
-  const uniqueImages = Array.from(new Set(cleanedImages))
-  const mainImage = fixUrl(product.image_url) || uniqueImages[0] || null
+  return Array.from(
+    new Set(
+      rawImages
+        .map((imageUrl) => resolveProductImageUrl(imageUrl))
+        .filter((imageUrl): imageUrl is string => Boolean(imageUrl))
+    )
+  )
+}
+
+export function normalizeProductImage(product: Product): Product {
+  const normalizedImages = collectProductImages(product)
+  const mainImage =
+    resolveProductImageUrl(product.image_url) ??
+    resolveProductImageUrl(product.thumbnail) ??
+    normalizedImages[0] ??
+    null
 
   return {
     ...product,
-    title: product.name, // Ensure UI can use .title or .name
+    title: product.name,
     image_url: mainImage,
-    thumbnail: mainImage || fixUrl(product.thumbnail),
-    images: uniqueImages,
+    thumbnail: mainImage ?? resolveProductImageUrl(product.thumbnail),
+    images: normalizedImages,
+    variants: product.variants?.map(normalizeProductVariantImage),
+    related_combinations: product.related_combinations?.map((combination) => ({
+      ...combination,
+      related_product: normalizeProductImage(combination.related_product),
+    })),
   }
 }

@@ -7,7 +7,6 @@ import {
   ArrowTopRightOnSquareIcon,
   PhotoIcon,
 } from "@heroicons/react/24/outline"
-import { convertToLocale } from "@lib/util/money"
 import AdminBadge from "@modules/admin/components/admin-badge"
 import AdminPageHeader from "@modules/admin/components/admin-page-header"
 import ProductCsvImport from "@modules/admin/components/product-csv-import"
@@ -146,20 +145,22 @@ export default async function AdminProducts({
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Inventory
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Price
-                </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[50px]"></th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {products.length > 0 ? (
-                products.map((product) => (
-                  <ClickableTableRow
-                    key={product.id}
-                    href={`/admin/products/${product.id}?from=${encodedBackUrl}`}
-                    className="hover:bg-gray-50 transition-colors group cursor-pointer"
-                  >
+                products.map((product) => {
+                  const catalogPreviewHref = `/products/${encodeURIComponent(
+                    product.handle
+                  )}`
+
+                  return (
+                    <ClickableTableRow
+                      key={product.id}
+                      href={`/admin/products/${product.id}?from=${encodedBackUrl}`}
+                      className="hover:bg-gray-50 transition-colors group cursor-pointer"
+                    >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="h-10 w-10 rounded-lg border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center">
                         {product.image_url ? (
@@ -210,27 +211,21 @@ export default async function AdminProducts({
                         {product.stock_count} in stock
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">
-                      {convertToLocale({
-                        amount: product.price,
-                        currency_code: product.currency_code,
-                      })}
-                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex justify-end gap-1 relative z-20">
                         {isStorefrontVisibleProduct(product.status) ? (
                           <a
-                            href={`/products/${product.handle}`}
+                            href={catalogPreviewHref}
                             target="_blank"
                             className="p-2 text-gray-400 hover:text-black transition-colors"
-                            title="Preview store"
+                            title="View in catalog"
                           >
                             <ArrowTopRightOnSquareIcon className="h-4 w-4" />
                           </a>
                         ) : (
                           <span
                             className="p-2 text-gray-300 rounded-lg cursor-not-allowed"
-                            title="Only active products are visible in store."
+                            title="Only active products are visible in the public catalog."
                           >
                             <ArrowTopRightOnSquareIcon className="h-4 w-4" />
                           </span>
@@ -258,11 +253,12 @@ export default async function AdminProducts({
                         </ProtectedAction>
                       </div>
                     </td>
-                  </ClickableTableRow>
-                ))
+                    </ClickableTableRow>
+                  )
+                })
               ) : (
                 <tr>
-                  <td colSpan={6} className="px-6 py-20 text-center">
+                  <td colSpan={5} className="px-6 py-20 text-center">
                     <div className="flex flex-col items-center">
                       <TagIcon className="h-10 w-10 text-gray-200 mb-3" />
                       <p className="text-sm font-bold text-gray-900">
@@ -297,3 +293,5 @@ export default async function AdminProducts({
     </div>
   )
 }
+
+
