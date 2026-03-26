@@ -1,7 +1,9 @@
 import Image from "next/image"
+import { FaCircleCheck } from "react-icons/fa6"
+import { GiMedicines } from "react-icons/gi"
+import { HiOutlineArrowDownTray, HiOutlineArrowRight } from "react-icons/hi2"
 
 import type { PublicProductDetail } from "@/lib/data/public-product-detail"
-import { MaterialSymbolIcon } from "@/modules/landing/components/material-symbol-icon"
 import {
   buildProductBrochureHref,
   buildProductDetailEnquiryHref,
@@ -73,7 +75,7 @@ export default function ProductHeroSection({ product }: ProductHeroSectionProps)
         <div className="relative overflow-hidden rounded-[2rem] bg-[var(--apx-surface-container-low)] p-6 shadow-[0_18px_40px_rgba(86,67,54,0.08)] md:p-10">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(175,246,121,0.22),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(245,130,32,0.14),transparent_45%)]" />
 
-          <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[#0f4d63] p-6 md:p-10">
+          <div className="relative aspect-square overflow-hidden rounded-[1.5rem] p-6 md:p-10">
             {product.image_url ? (
               <Image
                 src={product.image_url}
@@ -85,7 +87,7 @@ export default function ProductHeroSection({ product }: ProductHeroSectionProps)
               />
             ) : (
               <div className="flex h-full items-center justify-center rounded-[1.25rem] border border-white/10 bg-white/10 text-white/80">
-                <MaterialSymbolIcon name="local_pharmacy" className="text-7xl" />
+                <GiMedicines className="text-7xl" />
               </div>
             )}
           </div>
@@ -118,7 +120,7 @@ export default function ProductHeroSection({ product }: ProductHeroSectionProps)
                 </p>
                 {item.highlighted ? (
                   <div className="flex items-center gap-2 text-sm font-bold text-[var(--apx-secondary)]">
-                    <MaterialSymbolIcon name="check_circle" className="text-base" />
+                    <FaCircleCheck className="text-base" />
                     <span>{item.value}</span>
                   </div>
                 ) : (
@@ -137,7 +139,7 @@ export default function ProductHeroSection({ product }: ProductHeroSectionProps)
             className="ambient-shadow inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[var(--apx-primary)] to-[var(--apx-primary-container)] px-7 py-4 text-sm font-bold uppercase tracking-[0.04em] text-white transition-transform hover:scale-[0.98]"
           >
             <span>Inquire About This Product</span>
-            <MaterialSymbolIcon name="arrow_forward" className="text-lg" />
+            <HiOutlineArrowRight className="text-lg" />
           </a>
 
           <a
@@ -146,7 +148,7 @@ export default function ProductHeroSection({ product }: ProductHeroSectionProps)
             rel={hasExternalBrochure ? "noreferrer" : undefined}
             className="inline-flex items-center gap-3 rounded-xl bg-[var(--apx-surface-container-high)] px-7 py-4 text-sm font-bold text-[var(--apx-on-surface)] transition-colors hover:bg-[color:rgb(228_226_226/0.92)]"
           >
-            <MaterialSymbolIcon name="download" className="text-lg" />
+            <HiOutlineArrowDownTray className="text-lg" />
             <span>Product Brochure</span>
           </a>
         </div>

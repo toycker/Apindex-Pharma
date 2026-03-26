@@ -2,6 +2,18 @@ import type {
   CatalogCategory,
   PublicCatalogProduct,
 } from "@/lib/data/public-catalog"
+import type { IconType } from "react-icons"
+import {
+  HiOutlineBeaker,
+  HiOutlineHeart,
+  HiOutlineShieldCheck,
+  HiOutlineSparkles,
+  HiOutlineSquares2X2,
+} from "react-icons/hi2"
+import { GiMedicines } from "react-icons/gi"
+import { LuDroplets, LuPill, LuSyringe, LuWind } from "react-icons/lu"
+import { MdOutlineMedication, MdOutlineScience } from "react-icons/md"
+import { TbTopologyStar3 } from "react-icons/tb"
 
 export type PageToken = number | "ellipsis"
 
@@ -64,72 +76,76 @@ export function getProductBadge(product: PublicCatalogProduct): string {
   )
 }
 
-export function getCategoryIcon(category: CatalogCategory): string {
+export function getAllCategoriesIcon(): IconType {
+  return HiOutlineSquares2X2
+}
+
+export function getCategoryIcon(category: CatalogCategory): IconType {
   const name = category.name.toLowerCase()
 
   if (name.includes("cardio") || name.includes("heart")) {
-    return "monitor_heart"
+    return HiOutlineHeart
   }
 
   if (name.includes("onco") || name.includes("cancer")) {
-    return "biotech"
+    return TbTopologyStar3
   }
 
   if (name.includes("neuro")) {
-    return "neurology"
+    return HiOutlineBeaker
   }
 
   if (name.includes("gastro") || name.includes("digest")) {
-    return "medication"
+    return MdOutlineMedication
   }
 
   if (name.includes("resp") || name.includes("pulmo") || name.includes("lung")) {
-    return "air"
+    return LuWind
   }
 
   if (name.includes("immun") || name.includes("anti-allergic")) {
-    return "shield"
+    return HiOutlineShieldCheck
   }
 
   if (name.includes("anti") || name.includes("infect")) {
-    return "vaccines"
+    return LuSyringe
   }
 
   if (name.includes("derma") || name.includes("skin")) {
-    return "dermatology"
+    return HiOutlineSparkles
   }
 
-  return "medication"
+  return MdOutlineMedication
 }
 
-export function getProductIcon(product: PublicCatalogProduct): string {
+export function getProductIcon(product: PublicCatalogProduct): IconType {
   const badge = getProductBadge(product).toLowerCase()
 
   if (badge.includes("tablet")) {
-    return "pill"
+    return LuPill
   }
 
   if (badge.includes("capsule")) {
-    return "medication"
+    return GiMedicines
   }
 
   if (badge.includes("inject")) {
-    return "vaccines"
+    return LuSyringe
   }
 
   if (badge.includes("drop")) {
-    return "colorize"
+    return LuDroplets
   }
 
   if (badge.includes("cream") || badge.includes("ointment") || badge.includes("gel")) {
-    return "sanitizer"
+    return HiOutlineSparkles
   }
 
   if (badge.includes("syrup") || badge.includes("suspension")) {
-    return "science"
+    return MdOutlineScience
   }
 
-  return "local_pharmacy"
+  return GiMedicines
 }
 
 export function buildProductEnquiryHref(product: PublicCatalogProduct): string {

@@ -40,7 +40,7 @@ export default function HeroSection() {
               Explore Our Products
             </Link>
             <Link
-              href="/#contact"
+              href="/contact#contact-form"
               className="ambient-shadow rounded-xl bg-[var(--apx-secondary)] px-8 py-4 font-bold text-white transition-transform hover:scale-95"
             >
               Request a Quote

@@ -1,14 +1,15 @@
 import Link from "next/link"
+import { HiOutlineArrowUpRight } from "react-icons/hi2"
 
 import {
   CATALOG_DOSAGE_OPTIONS,
   type PublicCatalogResult,
 } from "@/lib/data/public-catalog"
-import { MaterialSymbolIcon } from "@/modules/landing/components/material-symbol-icon"
 import {
   buildCatalogRequestHref,
   buildPageTokens,
   buildProductsPageHref,
+  getAllCategoriesIcon,
   getCategoryIcon,
   getProductBadge,
   getProductIcon,
@@ -27,6 +28,7 @@ export default function ProductsCatalogSection({
   const selectedCategoryName =
     catalog.selectedCategory?.name ?? "All therapeutic categories"
   const pageTokens = buildPageTokens(catalog.page, catalog.totalPages)
+  const AllCategoriesIcon = getAllCategoriesIcon()
 
   return (
     <section className="mx-auto flex w-full max-w-screen-2xl flex-col gap-12 px-6 py-16 md:px-8 lg:flex-row lg:gap-16 lg:py-20">
@@ -50,12 +52,13 @@ export default function ProductsCatalogSection({
                   : "text-zinc-600 hover:bg-[var(--apx-surface-container-low)] hover:text-[var(--apx-primary)]"
               }`}
             >
-              <MaterialSymbolIcon name="apps" className="text-xl" />
+              <AllCategoriesIcon className="text-xl" />
               <span>All Categories</span>
             </Link>
 
             {catalog.categories.map((category) => {
               const isSelected = category.handle === catalog.selectedCategory?.handle
+              const CategoryIcon = getCategoryIcon(category)
 
               return (
                 <Link
@@ -70,10 +73,7 @@ export default function ProductsCatalogSection({
                       : "text-zinc-600 hover:bg-[var(--apx-surface-container-low)] hover:text-[var(--apx-primary)]"
                   }`}
                 >
-                  <MaterialSymbolIcon
-                    name={getCategoryIcon(category)}
-                    className="text-xl"
-                  />
+                  <CategoryIcon className="text-xl" />
                   <span>{category.name}</span>
                 </Link>
               )
@@ -127,45 +127,46 @@ export default function ProductsCatalogSection({
 
         {catalog.products.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {catalog.products.map((product) => (
-              <article
-                key={product.id}
-                className="group flex min-h-[250px] flex-col justify-between rounded-[2rem] border border-[color:rgb(221_193_176/0.14)] bg-white p-6 shadow-[0_18px_40px_rgba(86,67,54,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(86,67,54,0.12)]"
-              >
-                <div>
-                  <div className="mb-6 flex items-start justify-between gap-4">
-                    <span className="rounded-full bg-[var(--apx-secondary-container)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--apx-on-secondary-container)]">
-                      {getProductBadge(product)}
-                    </span>
-                    <MaterialSymbolIcon
-                      name={getProductIcon(product)}
-                      className="text-2xl text-[color:rgb(150_73_0/0.28)] transition-colors group-hover:text-[var(--apx-primary)]"
-                    />
+            {catalog.products.map((product) => {
+              const ProductIcon = getProductIcon(product)
+
+              return (
+                <article
+                  key={product.id}
+                  className="group flex min-h-[250px] flex-col justify-between rounded-[2rem] border border-[color:rgb(221_193_176/0.14)] bg-white p-6 shadow-[0_18px_40px_rgba(86,67,54,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(86,67,54,0.12)]"
+                >
+                  <div>
+                    <div className="mb-6 flex items-start justify-between gap-4">
+                      <span className="rounded-full bg-[var(--apx-secondary-container)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--apx-on-secondary-container)]">
+                        {getProductBadge(product)}
+                      </span>
+                      <ProductIcon className="text-2xl text-[color:rgb(150_73_0/0.28)] transition-colors group-hover:text-[var(--apx-primary)]" />
+                    </div>
+                    <h3 className="apx-font-headline text-2xl font-bold tracking-tight text-[var(--apx-on-surface)]">
+                      <Link
+                        href={buildProductDetailHref(product.handle)}
+                        className="transition-colors hover:text-[var(--apx-primary)]"
+                      >
+                        {product.name}
+                      </Link>
+                    </h3>
+                    <p className="mt-3 text-sm leading-6 text-[var(--apx-on-surface-variant)]">
+                      {getProductSummary(product)}
+                    </p>
                   </div>
-                  <h3 className="apx-font-headline text-2xl font-bold tracking-tight text-[var(--apx-on-surface)]">
+
+                  <div className="mt-8 border-t border-[var(--apx-surface-container-high)] pt-6">
                     <Link
                       href={buildProductDetailHref(product.handle)}
-                      className="transition-colors hover:text-[var(--apx-primary)]"
+                      className="flex items-center justify-between text-sm font-bold text-[var(--apx-on-surface)] transition-colors hover:text-[var(--apx-primary)]"
                     >
-                      {product.name}
+                      <span>View Product</span>
+                      <HiOutlineArrowUpRight className="text-lg" />
                     </Link>
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-[var(--apx-on-surface-variant)]">
-                    {getProductSummary(product)}
-                  </p>
-                </div>
-
-                <div className="mt-8 border-t border-[var(--apx-surface-container-high)] pt-6">
-                  <Link
-                    href={buildProductDetailHref(product.handle)}
-                    className="flex items-center justify-between text-sm font-bold text-[var(--apx-on-surface)] transition-colors hover:text-[var(--apx-primary)]"
-                  >
-                    <span>View Product</span>
-                    <MaterialSymbolIcon name="arrow_outward" className="text-lg" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+                  </div>
+                </article>
+              )
+            })}
           </div>
         ) : (
           <div className="rounded-[2rem] border border-dashed border-[color:rgb(221_193_176/0.5)] bg-[var(--apx-surface-container-low)] px-6 py-16 text-center">
@@ -227,4 +228,3 @@ export default function ProductsCatalogSection({
     </section>
   )
 }
-

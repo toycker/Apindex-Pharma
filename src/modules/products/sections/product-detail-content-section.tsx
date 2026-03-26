@@ -1,19 +1,29 @@
+import type { IconType } from "react-icons"
+import {
+  HiOutlineExclamationTriangle,
+  HiOutlineHeart,
+  HiOutlineInformationCircle,
+  HiOutlineShieldCheck,
+  HiOutlineUserGroup,
+} from "react-icons/hi2"
+import { GiMedicines } from "react-icons/gi"
+import { LuFlaskConical, LuStethoscope } from "react-icons/lu"
+
 import type { PublicProductDetail } from "@/lib/data/public-product-detail"
-import { MaterialSymbolIcon } from "@/modules/landing/components/material-symbol-icon"
 import { getProductDescriptionParagraphs } from "@/modules/products/lib/product-detail-ui"
 
 type ProductDetailContentSectionProps = {
   product: PublicProductDetail
 }
 
-const USE_ICONS = [
-  "medical_services",
-  "group",
-  "shield",
-  "biotech",
-  "monitor_heart",
-  "science",
-] as const
+const USE_ICONS: IconType[] = [
+  LuStethoscope,
+  HiOutlineUserGroup,
+  HiOutlineShieldCheck,
+  LuFlaskConical,
+  HiOutlineHeart,
+  GiMedicines,
+]
 
 function getUsesHeading(product: PublicProductDetail): string {
   return `${product.name} Uses`
@@ -94,22 +104,23 @@ export default function ProductDetailContentSection({
                 </h2>
 
                 <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {uses.map((useItem, index) => (
-                    <li
-                      key={`${useItem}-${index + 1}`}
-                      className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-[0_14px_32px_rgba(86,67,54,0.06)]"
-                    >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:rgb(175_246_121/0.18)] text-[var(--apx-secondary)]">
-                        <MaterialSymbolIcon
-                          name={USE_ICONS[index % USE_ICONS.length]}
-                          className="text-lg"
-                        />
-                      </div>
-                      <span className="text-sm font-semibold text-[var(--apx-on-surface)]">
-                        {useItem}
-                      </span>
-                    </li>
-                  ))}
+                  {uses.map((useItem, index) => {
+                    const UseIcon = USE_ICONS[index % USE_ICONS.length]
+
+                    return (
+                      <li
+                        key={`${useItem}-${index + 1}`}
+                        className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-[0_14px_32px_rgba(86,67,54,0.06)]"
+                      >
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:rgb(175_246_121/0.18)] text-[var(--apx-secondary)]">
+                          <UseIcon className="text-lg" />
+                        </div>
+                        <span className="text-sm font-semibold text-[var(--apx-on-surface)]">
+                          {useItem}
+                        </span>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             ) : null}
@@ -121,7 +132,7 @@ export default function ProductDetailContentSection({
             {hasSideEffects ? (
               <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(180deg,var(--apx-primary)_0%,#b8610b_100%)] p-8 text-white shadow-[0_24px_50px_rgba(150,73,0,0.24)]">
                 <div className="absolute right-0 top-0 p-7 text-white/10">
-                  <MaterialSymbolIcon name="warning" className="text-8xl" />
+                  <HiOutlineExclamationTriangle className="text-8xl" />
                 </div>
 
                 <div className="relative z-10">
@@ -134,10 +145,7 @@ export default function ProductDetailContentSection({
                         key={`${sideEffect}-${index + 1}`}
                         className="flex items-start gap-3"
                       >
-                        <MaterialSymbolIcon
-                          name="info"
-                          className="mt-0.5 text-[var(--apx-primary-fixed)]"
-                        />
+                        <HiOutlineInformationCircle className="mt-0.5 text-[var(--apx-primary-fixed)]" />
                         <p className="text-sm leading-6 text-white/90">{sideEffect}</p>
                       </div>
                     ))}

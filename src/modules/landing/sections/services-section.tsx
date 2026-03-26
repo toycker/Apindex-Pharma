@@ -1,7 +1,14 @@
-import { MaterialSymbolIcon } from "@modules/landing/components/material-symbol-icon"
+import type { IconType } from "react-icons"
+import {
+  MdBiotech,
+  MdFactory,
+  MdGavel,
+  MdInventory2,
+  MdVerified,
+} from "react-icons/md"
 
 type ServiceCard = {
-  icon: string
+  icon: IconType
   title: string
   description: string
   surface: "low" | "high"
@@ -11,7 +18,7 @@ type ServiceCard = {
 
 const SERVICE_CARDS: ServiceCard[] = [
   {
-    icon: "factory",
+    icon: MdFactory,
     title: "Contract Manufacturing",
     description:
       "State-of-the-art facilities dedicated to high-volume production for global partners.",
@@ -20,7 +27,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     offset: true,
   },
   {
-    icon: "biotech",
+    icon: MdBiotech,
     title: "3rd Party Manufacturing",
     description:
       "Scalable solutions for private label brands with strict adherence to WHO-GMP.",
@@ -28,7 +35,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     iconTone: "secondary",
   },
   {
-    icon: "inventory_2",
+    icon: MdInventory2,
     title: "Generic Products",
     description:
       "High-efficacy generic formulations providing accessible healthcare to millions.",
@@ -37,7 +44,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     offset: true,
   },
   {
-    icon: "gavel",
+    icon: MdGavel,
     title: "Institutional Tenders",
     description:
       "Reliable supply chain for governmental and health organization procurement.",
@@ -61,24 +68,27 @@ export default function ServicesSection() {
     <section id="infrastructure" className="bg-[var(--apx-surface)] py-32">
       <div className="mx-auto grid max-w-screen-2xl items-center gap-20 px-8 lg:grid-cols-2">
         <div className="grid grid-cols-2 gap-6">
-          {SERVICE_CARDS.map((card) => (
-            <div
-              key={card.title}
-              className={`space-y-4 rounded-xl p-8 ${SURFACE_CLASS[card.surface]} ${
-                card.offset ? "translate-y-8" : ""
-              }`}
-            >
-              <MaterialSymbolIcon
-                name={card.icon}
-                filled
-                className={`text-4xl ${ICON_TONE_CLASS[card.iconTone]}`}
-              />
-              <h3 className="apx-font-headline text-xl font-bold">{card.title}</h3>
-              <p className="text-sm leading-relaxed text-[var(--apx-on-surface-variant)]">
-                {card.description}
-              </p>
-            </div>
-          ))}
+          {SERVICE_CARDS.map((card) => {
+            const Icon = card.icon
+
+            return (
+              <div
+                key={card.title}
+                className={`space-y-4 rounded-xl p-8 ${SURFACE_CLASS[card.surface]} ${
+                  card.offset ? "translate-y-8" : ""
+                }`}
+              >
+                <Icon
+                  aria-hidden="true"
+                  className={`text-4xl ${ICON_TONE_CLASS[card.iconTone]}`}
+                />
+                <h3 className="apx-font-headline text-xl font-bold">{card.title}</h3>
+                <p className="text-sm leading-relaxed text-[var(--apx-on-surface-variant)]">
+                  {card.description}
+                </p>
+              </div>
+            )
+          })}
         </div>
 
         <div className="space-y-10 lg:pl-12">
@@ -96,8 +106,8 @@ export default function ServicesSection() {
           </p>
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--apx-secondary-fixed)]">
-              <MaterialSymbolIcon
-                name="verified"
+              <MdVerified
+                aria-hidden="true"
                 className="text-[var(--apx-on-secondary-container)]"
               />
             </div>

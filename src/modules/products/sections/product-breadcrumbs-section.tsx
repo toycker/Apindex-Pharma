@@ -1,7 +1,7 @@
 import Link from "next/link"
+import { HiOutlineChevronRight } from "react-icons/hi2"
 
 import type { PublicProductDetail } from "@/lib/data/public-product-detail"
-import { MaterialSymbolIcon } from "@/modules/landing/components/material-symbol-icon"
 
 type ProductBreadcrumbsSectionProps = {
   product: PublicProductDetail
@@ -16,14 +16,14 @@ export default function ProductBreadcrumbsSection({
         <Link href="/" className="transition-colors hover:text-[var(--apx-primary)]">
           Home
         </Link>
-        <MaterialSymbolIcon name="chevron_right" className="text-sm" />
+        <HiOutlineChevronRight className="text-sm" />
         <Link
           href="/products"
           className="transition-colors hover:text-[var(--apx-primary)]"
         >
           Products
         </Link>
-        <MaterialSymbolIcon name="chevron_right" className="text-sm" />
+        <HiOutlineChevronRight className="text-sm" />
         <span className="text-[var(--apx-on-surface)]">{product.name}</span>
       </nav>
     </section>

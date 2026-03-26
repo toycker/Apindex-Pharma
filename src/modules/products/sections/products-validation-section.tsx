@@ -1,6 +1,7 @@
 import Image from "next/image"
 
-import { MaterialSymbolIcon } from "@/modules/landing/components/material-symbol-icon"
+import { HiOutlineShieldCheck } from "react-icons/hi2"
+import { LuFlaskConical } from "react-icons/lu"
 import { VALIDATED_EXCELLENCE_IMAGE_URL } from "@/modules/products/lib/catalog-ui"
 
 export default function ProductsValidationSection() {
@@ -19,10 +20,7 @@ export default function ProductsValidationSection() {
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--apx-secondary-container)]">
-                <MaterialSymbolIcon
-                  name="verified"
-                  className="text-xl text-[var(--apx-on-secondary-container)]"
-                />
+                <HiOutlineShieldCheck className="text-xl text-[var(--apx-on-secondary-container)]" />
               </div>
               <div>
                 <p className="text-sm font-bold text-[var(--apx-on-surface)]">GMP Certified</p>
@@ -33,10 +31,7 @@ export default function ProductsValidationSection() {
             </div>
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--apx-secondary-container)]">
-                <MaterialSymbolIcon
-                  name="biotech"
-                  className="text-xl text-[var(--apx-on-secondary-container)]"
-                />
+                <LuFlaskConical className="text-xl text-[var(--apx-on-secondary-container)]" />
               </div>
               <div>
                 <p className="text-sm font-bold text-[var(--apx-on-surface)]">ISO 17025</p>

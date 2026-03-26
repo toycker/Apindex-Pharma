@@ -1,7 +1,7 @@
 import Image from "next/image"
 
 import type { PublicCatalogResult } from "@/lib/data/public-catalog"
-import { MaterialSymbolIcon } from "@/modules/landing/components/material-symbol-icon"
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2"
 import { PRODUCTS_HERO_IMAGE_URL } from "@/modules/products/lib/catalog-ui"
 
 type ProductsHeroSectionProps = {
@@ -34,7 +34,7 @@ export default function ProductsHeroSection({
             ) : null}
             <div className="flex flex-col gap-3 rounded-3xl border border-[color:rgb(221_193_176/0.2)] bg-white p-2 shadow-sm sm:flex-row sm:items-center">
               <div className="flex flex-1 items-center gap-3 px-3 sm:px-4">
-                <MaterialSymbolIcon name="search" className="text-lg text-[var(--apx-outline)]" />
+                <HiOutlineMagnifyingGlass className="text-lg text-[var(--apx-outline)]" />
                 <input
                   type="search"
                   name="q"
