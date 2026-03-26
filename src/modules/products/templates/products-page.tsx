@@ -14,7 +14,7 @@ export default function ProductsPageTemplate({
 }: ProductsPageTemplateProps) {
   return (
     <div className="apx-landing apx-font-body min-h-screen bg-[var(--apx-surface)] text-[var(--apx-on-surface)]">
-      <TopNavBar activeLabel="Products" />
+      <TopNavBar />
       <main className="!pb-0 pt-20">
         <ProductsHeroSection catalog={catalog} />
         <ProductsCatalogSection catalog={catalog} />
@@ -24,3 +24,4 @@ export default function ProductsPageTemplate({
     </div>
   )
 }
+

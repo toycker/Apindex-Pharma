@@ -12,7 +12,7 @@ export default function Loading() {
                     </div>
                 </div>
                 <p className="text-sm font-medium text-gray-500 animate-pulse tracking-wide uppercase">
-                    Toycker
+                    Apindex
                 </p>
             </div>
         </div>

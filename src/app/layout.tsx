@@ -11,7 +11,12 @@ export const metadata: Metadata = {
   description:
     "Apindex pharmaceutical solutions and admin backend operations.",
   icons: {
-    icon: "/apindex-logo.jpg",
+    icon: [
+      { url: "/favicon.png", sizes: "64x64", type: "image/png" },
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
   },
 }
 
