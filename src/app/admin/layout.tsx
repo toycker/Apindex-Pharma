@@ -19,7 +19,12 @@ export const metadata = {
   title: "Apindex Admin",
   description: "Apindex backend management",
   icons: {
-    icon: "/apindex-logo.jpg",
+    icon: [
+      { url: "/favicon.png", sizes: "64x64", type: "image/png" },
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
   },
 }
 
@@ -82,10 +87,10 @@ export default async function AdminLayout({
           {/* Logo Section */}
           <div className="h-16 flex items-center px-6 border-b border-gray-200 shrink-0">
             <Link href="/admin" className="flex items-center gap-3 group">
-              <div className="h-9 w-9 rounded-lg flex items-center justify-center overflow-hidden transition-all bg-primary p-1">
+              <div className="h-9 w-9 rounded-lg flex items-center justify-center overflow-hidden transition-all">
                 <Image
                   src="/icon-512x512.png"
-                  alt="Toycker Logo"
+                  alt="Apindex Logo"
                   width={30}
                   height={30}
                   className="w-full h-full object-cover"
@@ -93,7 +98,7 @@ export default async function AdminLayout({
               </div>
               <div className="flex flex-col">
                 <span className="font-semibold text-base text-gray-900 leading-tight">
-                  Toycker
+                  Apindex
                 </span>
                 <span
                   className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md border uppercase tracking-wider w-fit mt-1 ${

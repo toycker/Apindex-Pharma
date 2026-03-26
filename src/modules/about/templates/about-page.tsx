@@ -11,7 +11,7 @@ import TopNavBar from "@modules/landing/sections/top-nav-bar"
 export default function AboutPageTemplate() {
   return (
     <div className="apx-landing apx-font-body bg-[var(--apx-surface)] text-[var(--apx-on-surface)]">
-      <TopNavBar currentPage="about" />
+      <TopNavBar />
       <main className="!pb-0">
         <AboutHeroSection />
         <AboutIntroSection />
@@ -25,3 +25,4 @@ export default function AboutPageTemplate() {
     </div>
   )
 }
+

@@ -30,15 +30,14 @@ export default function FooterSection() {
     <footer id="contact" className="border-t-0 bg-zinc-50">
       <div className="mx-auto grid max-w-screen-2xl grid-cols-1 gap-12 px-12 py-20 md:grid-cols-4">
         <div className="space-y-6">
-          <div className="relative h-12 w-[188px]">
-            <Image
-              fill
-              src="/apindex-logo.jpg"
-              alt="Apindex"
-              sizes="188px"
-              className="object-contain object-left"
-            />
-          </div>
+          <Image
+            src="/apindex-logo.jpg"
+            alt="Apindex"
+            width={1920}
+            height={1187}
+            quality={100}
+            className="h-14 w-auto object-contain sm:h-16"
+          />
           <p className="apx-font-body text-sm leading-relaxed text-zinc-500">
             Precision in Chemistry. A pharmaceutical leader dedicated to global health
             standards and innovative manufacturing.
