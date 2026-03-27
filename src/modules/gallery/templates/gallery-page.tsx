@@ -22,8 +22,6 @@ const CATALOG_DOSAGE_OPTIONS = [
   "Creams",
   "Syrups",
 ]
-import FooterSection from "@/modules/landing/sections/footer-section"
-import TopNavBar from "@/modules/landing/sections/top-nav-bar"
 import { getProductIcon } from "@/modules/products/lib/catalog-ui"
 
 type GalleryPageTemplateProps = {
@@ -105,8 +103,6 @@ export default function GalleryPageTemplate({
 
   return (
     <div className="apx-landing apx-font-body min-h-screen bg-[#f9fdfa] text-[var(--apx-on-surface)]">
-      <TopNavBar />
-
       <main className="!pb-0 pt-[104px] mix-blend-normal">
         <div className="mx-auto w-full max-w-screen-xl px-4 py-8">
           {/* Header Section */}
@@ -193,8 +189,6 @@ export default function GalleryPageTemplate({
           )}
         </div>
       </main>
-
-      <FooterSection />
 
       {/* Lightbox / Slider Modal */}
       {selectedIndex !== null && displayProducts[selectedIndex] && (

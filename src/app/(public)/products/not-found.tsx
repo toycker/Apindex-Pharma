@@ -1,12 +1,8 @@
 import Link from "next/link"
 
-import FooterSection from "@/modules/landing/sections/footer-section"
-import TopNavBar from "@/modules/landing/sections/top-nav-bar"
-
 export default function ProductsNotFound() {
   return (
     <div className="apx-landing apx-font-body min-h-screen bg-[var(--apx-surface)] text-[var(--apx-on-surface)]">
-      <TopNavBar />
       <main className="!pb-0 pt-20">
         <section className="mx-auto flex min-h-[60vh] w-full max-w-screen-2xl flex-col items-center justify-center px-6 py-20 text-center md:px-8">
           <span className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-[var(--apx-primary)]">
@@ -35,8 +31,6 @@ export default function ProductsNotFound() {
           </div>
         </section>
       </main>
-      <FooterSection />
     </div>
   )
 }
-
