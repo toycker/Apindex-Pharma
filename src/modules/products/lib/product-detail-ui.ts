@@ -106,6 +106,41 @@ export function getProductDescriptionParagraphs(
     .filter(Boolean)
 }
 
+const ALLOWED_DESCRIPTION_TAGS: Set<string> = new Set([
+  "p", "br",
+  "strong", "b", "em", "i", "s", "del",
+  "h1", "h2", "h3",
+  "ul", "ol", "li",
+  "blockquote", "pre", "code",
+  "hr",
+])
+
+// Pure string-based sanitizer — no DOM or filesystem access needed.
+// Strips all attributes (eliminates XSS via onclick, href, style, etc.)
+// and removes any tags not in the allowlist.
+function sanitizeDescriptionHtml(html: string): string {
+  return html.replace(
+    /<\/?\s*([a-zA-Z][a-zA-Z0-9]*)\s*(?:[^"'>]|"[^"]*"|'[^']*')*\s*\/?>/g,
+    (match, tagName: string) => {
+      const tag = tagName.toLowerCase()
+      if (!ALLOWED_DESCRIPTION_TAGS.has(tag)) {
+        return ""
+      }
+      return match.startsWith("</") ? `</${tag}>` : `<${tag}>`
+    }
+  )
+}
+
+export function getProductDescriptionHtml(
+  product: PublicProductDetail
+): string | null {
+  const rawDescription = product.description?.trim()
+  if (!rawDescription) {
+    return null
+  }
+  return sanitizeDescriptionHtml(rawDescription)
+}
+
 export function buildProductDetailHref(handle: string): string {
   return `/products/${encodeURIComponent(handle)}`
 }

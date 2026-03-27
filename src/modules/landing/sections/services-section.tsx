@@ -107,7 +107,7 @@ export default function ServicesSection() {
             return (
               <div
                 key={card.title}
-                className={`space-y-4 rounded-xl p-6 ${SURFACE_CLASS[card.surface]} ${card.offset ? "lg:translate-y-8" : ""} ${card.orderClass ?? ""}`}
+                className={`space-y-4 rounded-xl p-6 lg:p-8 ${SURFACE_CLASS[card.surface]} ${card.offset ? "lg:translate-y-8" : ""} ${card.orderClass ?? ""}`}
               >
                 <Icon
                   aria-hidden="true"
