@@ -1,51 +1,64 @@
 import Image from "next/image"
 import Link from "next/link"
 
-const HERO_IMAGE_URL =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuB9OeoJelP19gJ61a_CZc1AphOtugOZk73qmzACyIZcGDDHK5HgS-rxwuWfZ-NO6NYL0T19uOgtnbKrkK2Z9ycu116q7Rt9PjpiKZGVoZeL-KGt-7qsTKYy5p34dpUEtwHkU-RMF3mDfX0J97K_NA8OrH_EXsncoXpkCfn7KS0QFI2vMYbdEVT78X2sONELE1qFEMXtdaf_hp_ILmfTauyBYiqKlRY9bvz-fRZQaFyAiUj7jk38ipwTrxQ5pelo6SIEA4lGmmrgFYU"
+const HERO_IMAGE_URL = "/team-labs.avif"
 
 export default function HeroSection() {
   return (
-    <section id="about" className="relative flex min-h-[921px] items-center overflow-hidden pt-20">
+    <section
+      id="home"
+      className="relative flex min-h-screen items-end overflow-hidden pt-20"
+    >
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
           fill
           priority
           sizes="100vw"
           src={HERO_IMAGE_URL}
-          alt="Ultra-modern pharmaceutical laboratory with clean white surfaces, high-tech glass equipment, and soft professional blue and orange lighting"
+          alt="Pharmaceutical manufacturing facility with industrial reactors"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--apx-surface)] via-[color:rgb(251_249_248/0.8)] to-transparent" />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-screen-2xl gap-12 px-8 md:grid-cols-2">
-        <div className="space-y-8">
-          <span className="inline-block rounded-full bg-[var(--apx-secondary-container)] px-3 py-1 text-xs font-bold uppercase tracking-widest text-[var(--apx-on-secondary-container)]">
-            WHO-GMP CERTIFIED
-          </span>
-          <h1 className="apx-font-headline text-6xl font-extrabold leading-[1.1] tracking-tight text-[var(--apx-on-surface)] md:text-7xl">
-            Your Trusted Partner in <span className="text-[var(--apx-primary)]">Global</span>{" "}
-            Healthcare
-          </h1>
-          <p className="max-w-lg text-lg leading-relaxed text-[var(--apx-on-surface-variant)]">
-            Innovating quality pharmaceutical solutions for a healthier world through
-            precision chemistry and editorial-grade manufacturing standards.
-          </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Link
-              href="/products"
-              className="ambient-shadow rounded-xl bg-gradient-to-r from-[var(--apx-primary)] to-[var(--apx-primary-container)] px-8 py-4 font-bold text-white transition-transform hover:scale-95"
-            >
-              Explore Our Products
-            </Link>
-            <Link
-              href="/contact#contact-form"
-              className="ambient-shadow rounded-xl bg-[var(--apx-secondary)] px-8 py-4 font-bold text-white transition-transform hover:scale-95"
-            >
-              Request a Quote
-            </Link>
-          </div>
+      {/* Content — bottom left */}
+      <div className="relative z-10 w-full max-w-3xl px-8 pb-20 md:px-14">
+        <h1 className="text-4xl font-extrabold uppercase leading-[1.15] tracking-wide text-white sm:text-5xl md:text-6xl">
+          YOUR{" "}
+          <span style={{ color: "var(--apx-primary-container)" }}>TRUSTED PARTNER</span>
+          <br />
+          IN GLOBAL HEALTHCARE
+        </h1>
+
+        <p className="mt-3 text-sm leading-relaxed text-white/70 sm:text-base">
+          WHO-GMP certified manufacturer delivering quality pharmaceutical
+          products to 50+ countries — trusted by healthcare professionals
+          worldwide.
+        </p>
+
+        <div className="mt-7 flex flex-wrap gap-3">
+          <Link
+            href="/products"
+            className="rounded-lg px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
+            style={{ backgroundColor: "var(--apx-primary-container)" }}
+          >
+            Explore Our Products
+          </Link>
+          <Link
+            href="/contact#contact-form"
+            className="rounded-lg border border-white/50 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+          >
+            Request a Quote
+          </Link>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-7 left-1/2 z-10 -translate-x-1/2">
+        <div className="flex h-9 w-6 items-start justify-center rounded-full border-2 border-white/60 pt-1.5">
+          <div className="h-1.5 w-0.5 animate-[scrollDot_2s_ease-in-out_infinite] rounded-full bg-white/60" />
         </div>
       </div>
     </section>
