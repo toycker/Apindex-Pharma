@@ -23,43 +23,43 @@ type SpecItem = {
 
 function buildSpecItems(product: PublicProductDetail): SpecItem[] {
   const details = product.pharmaDetails
-  const therapeuticFallback =
-    details?.therapeuticUse ||
-    product.categories.map((category) => category.name).join(", ") ||
-    "Available on request"
+  const items: SpecItem[] = []
 
-  return [
-    {
-      label: "Trade Name",
-      value: details?.tradeName || "Available on request",
-    },
-    {
-      label: "Available Strength",
-      value: details?.availableStrength || "Available on request",
-    },
-    {
-      label: "Packing",
-      value: details?.packing || "Available on request",
-    },
-    {
+  if (details?.tradeName) {
+    items.push({ label: "Trade Name", value: details.tradeName })
+  }
+
+  if (details?.availableStrength) {
+    items.push({ label: "Available Strength", value: details.availableStrength })
+  }
+
+  if (details?.packing) {
+    items.push({ label: "Packing", value: details.packing })
+  }
+
+  if (details?.packInsertLeaflet !== null && details?.packInsertLeaflet !== undefined) {
+    items.push({
       label: "Pack Insert / Leaflet",
-      value:
-        details?.packInsertLeaflet === true
-          ? "Yes"
-          : details?.packInsertLeaflet === false
-            ? "No"
-            : "Available on request",
-      highlighted: details?.packInsertLeaflet === true,
-    },
-    {
-      label: "Therapeutic Use",
-      value: therapeuticFallback,
-    },
-    {
-      label: "Production Capacity",
-      value: details?.productionCapacity || "Available on request",
-    },
-  ]
+      value: details.packInsertLeaflet ? "Yes" : "No",
+      highlighted: details.packInsertLeaflet === true,
+    })
+  }
+
+  const therapeuticUse =
+    details?.therapeuticUse ||
+    (product.categories.length > 0
+      ? product.categories.map((c) => c.name).join(", ")
+      : null)
+
+  if (therapeuticUse) {
+    items.push({ label: "Therapeutic Use", value: therapeuticUse })
+  }
+
+  if (details?.productionCapacity) {
+    items.push({ label: "Production Capacity", value: details.productionCapacity })
+  }
+
+  return items
 }
 
 export default function ProductHeroSection({ product }: ProductHeroSectionProps) {
@@ -111,27 +111,29 @@ export default function ProductHeroSection({ product }: ProductHeroSectionProps)
           ) : null}
         </h1>
 
-        <div className="mt-8 rounded-[1.6rem] bg-[color:rgb(245_243_243/0.96)] p-6 md:p-8">
-          <div className="grid grid-cols-1 gap-x-10 gap-y-6 md:grid-cols-2">
-            {specItems.map((item) => (
-              <div key={item.label} className="space-y-1">
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:rgb(86_67_54/0.68)]">
-                  {item.label}
-                </p>
-                {item.highlighted ? (
-                  <div className="flex items-center gap-2 text-sm font-bold text-[var(--apx-secondary)]">
-                    <FaCircleCheck className="text-base" />
-                    <span>{item.value}</span>
-                  </div>
-                ) : (
-                  <p className="text-sm font-semibold text-[var(--apx-on-surface)] md:text-base">
-                    {item.value}
+        {specItems.length > 0 && (
+          <div className="mt-8 rounded-[1.6rem] bg-[color:rgb(245_243_243/0.96)] p-6 md:p-8">
+            <div className="grid grid-cols-1 gap-x-10 gap-y-6 md:grid-cols-2">
+              {specItems.map((item) => (
+                <div key={item.label} className="space-y-1">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:rgb(86_67_54/0.68)]">
+                    {item.label}
                   </p>
-                )}
-              </div>
-            ))}
+                  {item.highlighted ? (
+                    <div className="flex items-center gap-2 text-sm font-bold text-[var(--apx-secondary)]">
+                      <FaCircleCheck className="text-base" />
+                      <span>{item.value}</span>
+                    </div>
+                  ) : (
+                    <p className="text-sm font-semibold text-[var(--apx-on-surface)] md:text-base">
+                      {item.value}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="mt-8 flex flex-wrap gap-4">
           <a
