@@ -28,7 +28,7 @@ const CERTIFICATION_LINKS: FooterLink[] = [
 export default function FooterSection() {
   return (
     <footer id="contact" className="border-t-0 bg-zinc-50">
-      <div className="mx-auto grid max-w-screen-2xl grid-cols-1 gap-12 px-12 py-20 md:grid-cols-4">
+      <div className="mx-auto grid max-w-screen-2xl grid-cols-1 gap-12 px-8 py-20 md:grid-cols-4">
         <div className="space-y-6">
           <Image
             src="/apindex-logo.jpg"
@@ -42,20 +42,6 @@ export default function FooterSection() {
             Precision in Chemistry. A pharmaceutical leader dedicated to global health
             standards and innovative manufacturing.
           </p>
-          <div className="flex gap-4">
-            <MdLeaderboard
-              aria-hidden="true"
-              className="cursor-pointer text-[var(--apx-primary)] transition-transform hover:scale-110"
-            />
-            <MdAlternateEmail
-              aria-hidden="true"
-              className="cursor-pointer text-[var(--apx-primary)] transition-transform hover:scale-110"
-            />
-            <MdPublic
-              aria-hidden="true"
-              className="cursor-pointer text-[var(--apx-primary)] transition-transform hover:scale-110"
-            />
-          </div>
         </div>
 
         <div className="space-y-6">
