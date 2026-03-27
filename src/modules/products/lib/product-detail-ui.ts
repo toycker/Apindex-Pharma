@@ -1,4 +1,3 @@
-import DOMPurify from "isomorphic-dompurify"
 import type { PublicProductDetail } from "@/lib/data/public-product-detail"
 
 const CONTACT_EMAIL = "contact@apindexpharma.com"
@@ -107,14 +106,30 @@ export function getProductDescriptionParagraphs(
     .filter(Boolean)
 }
 
-const ALLOWED_HTML_TAGS = [
+const ALLOWED_DESCRIPTION_TAGS: Set<string> = new Set([
   "p", "br",
   "strong", "b", "em", "i", "s", "del",
   "h1", "h2", "h3",
   "ul", "ol", "li",
   "blockquote", "pre", "code",
   "hr",
-]
+])
+
+// Pure string-based sanitizer — no DOM or filesystem access needed.
+// Strips all attributes (eliminates XSS via onclick, href, style, etc.)
+// and removes any tags not in the allowlist.
+function sanitizeDescriptionHtml(html: string): string {
+  return html.replace(
+    /<\/?\s*([a-zA-Z][a-zA-Z0-9]*)\s*(?:[^"'>]|"[^"]*"|'[^']*')*\s*\/?>/g,
+    (match, tagName: string) => {
+      const tag = tagName.toLowerCase()
+      if (!ALLOWED_DESCRIPTION_TAGS.has(tag)) {
+        return ""
+      }
+      return match.startsWith("</") ? `</${tag}>` : `<${tag}>`
+    }
+  )
+}
 
 export function getProductDescriptionHtml(
   product: PublicProductDetail
@@ -123,11 +138,7 @@ export function getProductDescriptionHtml(
   if (!rawDescription) {
     return null
   }
-
-  return DOMPurify.sanitize(rawDescription, {
-    ALLOWED_TAGS: ALLOWED_HTML_TAGS,
-    ALLOWED_ATTR: [],
-  })
+  return sanitizeDescriptionHtml(rawDescription)
 }
 
 export function buildProductDetailHref(handle: string): string {

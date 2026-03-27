@@ -111,8 +111,7 @@ const nextConfig = {
     ],
   },
   // serverExternalPackages is stable in Next.js 15, moved out of experimental
-  // jsdom (used by isomorphic-dompurify) cannot be bundled by webpack — must run as-is at runtime
-  serverExternalPackages: ["require-in-the-middle", "import-in-the-middle", "isomorphic-dompurify", "jsdom"],
+  serverExternalPackages: ["require-in-the-middle", "import-in-the-middle"],
 }
 
 // Injected Sentry Configuration
