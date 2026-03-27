@@ -693,40 +693,9 @@ export default function NewProductForm({ collections, categories }: NewProductFo
           </div>
         </AdminCard>
 
-        {productType === "single" && (
-          <AdminCard title="Inventory">
-            <div className="space-y-4">
-              <p className="text-xs font-medium leading-relaxed text-gray-500">
-                Pricing is hidden for catalogue enquiries. Use inventory to manage
-                availability for this product.
-              </p>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
-                  Opening Stock
-                </label>
-                <input
-                  name="stock_count"
-                  type="number"
-                  placeholder="0"
-                  required={productType === "single"}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold focus:border-black focus:ring-0"
-                />
-              </div>
-            </div>
-          </AdminCard>
-        )}
+        {/* Inventory disabled — hidden input keeps stock_count at 0 */}
+        <input type="hidden" name="stock_count" value="0" />
 
-        {productType === "variant" && (
-          <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-4">
-            <h4 className="text-[10px] font-black text-yellow-800 uppercase tracking-widest mb-1 flex items-center gap-2">
-              <Layers className="w-3 h-3" />
-              Managed via Variants
-            </h4>
-            <p className="text-[10px] text-yellow-700 font-medium leading-relaxed">
-              Variant labels and total stock will be managed from the list above for this catalogue entry.
-            </p>
-          </div>
-        )}
 
         <AdminCard title="Organization">
           <div className="space-y-6">

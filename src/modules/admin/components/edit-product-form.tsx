@@ -419,22 +419,8 @@ export default function EditProductForm({
             </div>
           </AdminCard>
 
-          {productType === "single" && (
-            <AdminCard title="Inventory">
-              <div className="space-y-4">
-                <p className="text-xs font-medium leading-relaxed text-gray-500">
-                  Pricing is hidden for catalogue enquiries. Use inventory to manage
-                  availability for this product.
-                </p>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
-                    Base Stock
-                  </label>
-                  <input name="stock_count" type="number" defaultValue={product.stock_count} required className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold focus:border-black focus:ring-0" />
-                </div>
-              </div>
-            </AdminCard>
-          )}
+          {/* Inventory disabled — hidden input preserves existing stock_count */}
+          <input type="hidden" name="stock_count" value={product.stock_count?.toString() ?? "0"} />
 
           <AdminCard title="Organization">
             <div className="space-y-6">

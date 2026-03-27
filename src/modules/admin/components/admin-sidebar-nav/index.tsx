@@ -9,7 +9,6 @@ import {
   UsersIcon,
   RectangleStackIcon,
   FolderIcon,
-  ArchiveBoxIcon,
   CreditCardIcon,
   TruckIcon,
   SparklesIcon,
@@ -31,7 +30,8 @@ const NAV_ITEMS: NavItemConfig[] = [
   { label: "Home", href: "/admin", icon: HomeIcon }, // Always visible
   { label: "Orders", href: "/admin/orders", icon: ShoppingBagIcon, permission: PERMISSIONS.ORDERS_READ },
   { label: "Products", href: "/admin/products", icon: TagIcon, permission: PERMISSIONS.PRODUCTS_READ },
-  { label: "Inventory", href: "/admin/inventory", icon: ArchiveBoxIcon, permission: PERMISSIONS.INVENTORY_READ },
+  // Inventory disabled for now — to re-enable: import ArchiveBoxIcon and uncomment:
+  // { label: "Inventory", href: "/admin/inventory", icon: ArchiveBoxIcon, permission: PERMISSIONS.INVENTORY_READ },
   { label: "Collections", href: "/admin/collections", icon: RectangleStackIcon, permission: PERMISSIONS.COLLECTIONS_READ },
   { label: "Categories", href: "/admin/categories", icon: FolderIcon, permission: PERMISSIONS.CATEGORIES_READ },
   { label: "Shipping", href: "/admin/shipping", icon: TruckIcon, permission: PERMISSIONS.SHIPPING_READ },
