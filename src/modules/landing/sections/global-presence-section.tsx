@@ -25,7 +25,7 @@ export default function GlobalPresenceSection() {
   return (
     <section
       id="global-presence"
-      className="relative overflow-hidden bg-zinc-900 py-24 text-white"
+      className="relative overflow-hidden bg-zinc-900 py-16 lg:py-24 text-white"
     >
       <div className="absolute inset-0 opacity-20">
         <Image

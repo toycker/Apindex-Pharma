@@ -48,9 +48,9 @@ const BORDER_TONE_CLASS: Record<StoryCard["borderTone"], string> = {
 
 export default function QualityCommitmentSection() {
   return (
-    <section className="bg-[var(--apx-surface)] py-32">
+    <section className="bg-[var(--apx-surface)] py-16 lg:py-24">
       <div className="mx-auto max-w-screen-2xl px-8">
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {STORY_CARDS.map((card) => (
             <div key={card.title} className="group">
               <div className="relative mb-8 h-[400px] overflow-hidden rounded-xl bg-[var(--apx-surface-container-low)]">

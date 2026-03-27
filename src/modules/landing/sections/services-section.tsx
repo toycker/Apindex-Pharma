@@ -14,6 +14,7 @@ type ServiceCard = {
   surface: "low" | "high"
   iconTone: "primary" | "secondary"
   offset?: boolean
+  orderClass?: string
 }
 
 const SERVICE_CARDS: ServiceCard[] = [
@@ -28,7 +29,7 @@ const SERVICE_CARDS: ServiceCard[] = [
   },
   {
     icon: MdBiotech,
-    title: "3rd Party Manufacturing",
+    title: "3rd Party Manufacturing", 
     description:
       "Scalable solutions for private label brands with strict adherence to WHO-GMP.",
     surface: "low",
@@ -42,6 +43,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     surface: "low",
     iconTone: "secondary",
     offset: true,
+    orderClass: "order-4 lg:order-none",
   },
   {
     icon: MdGavel,
@@ -50,6 +52,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Reliable supply chain for governmental and health organization procurement.",
     surface: "high",
     iconTone: "primary",
+    orderClass: "order-3 lg:order-none",
   },
 ]
 
@@ -65,37 +68,14 @@ const ICON_TONE_CLASS: Record<ServiceCard["iconTone"], string> = {
 
 export default function ServicesSection() {
   return (
-    <section id="infrastructure" className="bg-[var(--apx-surface)] py-32">
-      <div className="mx-auto grid max-w-screen-2xl items-center gap-20 px-8 lg:grid-cols-2">
-        <div className="grid grid-cols-2 gap-6">
-          {SERVICE_CARDS.map((card) => {
-            const Icon = card.icon
-
-            return (
-              <div
-                key={card.title}
-                className={`space-y-4 rounded-xl p-8 ${SURFACE_CLASS[card.surface]} ${
-                  card.offset ? "translate-y-8" : ""
-                }`}
-              >
-                <Icon
-                  aria-hidden="true"
-                  className={`text-4xl ${ICON_TONE_CLASS[card.iconTone]}`}
-                />
-                <h3 className="apx-font-headline text-xl font-bold">{card.title}</h3>
-                <p className="text-sm leading-relaxed text-[var(--apx-on-surface-variant)]">
-                  {card.description}
-                </p>
-              </div>
-            )
-          })}
-        </div>
-
-        <div className="space-y-10 lg:pl-12">
+    <section id="infrastructure" className="bg-[var(--apx-surface)] py-16 lg:py-24">
+      <div className="mx-auto grid max-w-screen-2xl items-center gap-12 px-8 lg:grid-cols-2">
+        {/* Text content — shown first on mobile via order */}
+        <div className="order-1 space-y-6 lg:order-2 lg:space-y-10">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[var(--apx-secondary)]">
             Our Capabilities
           </p>
-          <h2 className="apx-font-headline text-5xl font-extrabold leading-tight">
+          <h2 className="apx-font-headline text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
             Precision at every <span className="italic text-[var(--apx-primary)]">molecular</span>{" "}
             level.
           </h2>
@@ -118,6 +98,28 @@ export default function ServicesSection() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Service cards — shown second on mobile */}
+        <div className="order-2 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:order-1 lg:gap-6">
+          {SERVICE_CARDS.map((card) => {
+            const Icon = card.icon
+            return (
+              <div
+                key={card.title}
+                className={`space-y-4 rounded-xl p-6 ${SURFACE_CLASS[card.surface]} ${card.offset ? "lg:translate-y-8" : ""} ${card.orderClass ?? ""}`}
+              >
+                <Icon
+                  aria-hidden="true"
+                  className={`text-4xl ${ICON_TONE_CLASS[card.iconTone]}`}
+                />
+                <h3 className="apx-font-headline text-lg font-bold lg:text-xl">{card.title}</h3>
+                <p className="text-sm leading-relaxed text-[var(--apx-on-surface-variant)]">
+                  {card.description}
+                </p>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>
