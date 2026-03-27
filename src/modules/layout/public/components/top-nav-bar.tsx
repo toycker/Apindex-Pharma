@@ -100,7 +100,7 @@ export default function TopNavBar() {
 
         <Link
           href={quoteHref}
-          className="ambient-shadow hidden rounded-md bg-gradient-to-r from-[var(--apx-primary)] to-[var(--apx-primary-container)] px-6 py-2.5 text-sm font-semibold text-white transition-transform duration-200 ease-in-out hover:scale-95 md:inline-flex"
+          className="ambient-shadow hidden rounded-md bg-[var(--apx-primary-container)] px-5 py-2.5 text-sm font-semibold text-white md:inline-flex"
         >
           Request a Quote
         </Link>
@@ -133,7 +133,7 @@ export default function TopNavBar() {
 
             <Link
               href={quoteHref}
-              className="mt-2 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[var(--apx-primary)] to-[var(--apx-primary-container)] px-4 py-3 text-sm font-semibold text-white"
+              className="mt-2 inline-flex items-center justify-center rounded-xl bg-[var(--apx-primary-container)] px-4 py-3 text-sm font-semibold text-white"
             >
               Request a Quote
             </Link>
