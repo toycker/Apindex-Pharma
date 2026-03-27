@@ -1,3 +1,4 @@
+import DOMPurify from "isomorphic-dompurify"
 import type { PublicProductDetail } from "@/lib/data/public-product-detail"
 
 const CONTACT_EMAIL = "contact@apindexpharma.com"
@@ -104,6 +105,29 @@ export function getProductDescriptionParagraphs(
     .split(/\n{2,}|\n/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean)
+}
+
+const ALLOWED_HTML_TAGS = [
+  "p", "br",
+  "strong", "b", "em", "i", "s", "del",
+  "h1", "h2", "h3",
+  "ul", "ol", "li",
+  "blockquote", "pre", "code",
+  "hr",
+]
+
+export function getProductDescriptionHtml(
+  product: PublicProductDetail
+): string | null {
+  const rawDescription = product.description?.trim()
+  if (!rawDescription) {
+    return null
+  }
+
+  return DOMPurify.sanitize(rawDescription, {
+    ALLOWED_TAGS: ALLOWED_HTML_TAGS,
+    ALLOWED_ATTR: [],
+  })
 }
 
 export function buildProductDetailHref(handle: string): string {

@@ -351,6 +351,89 @@ body {
     margin-bottom: 0.25rem;
   }
 
+  .rich-text-block ul {
+    list-style: disc;
+  }
+
+  .rich-text-block ol {
+    list-style: decimal;
+  }
+
+  .rich-text-block h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--apx-on-surface);
+  }
+
+  .rich-text-block h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--apx-on-surface);
+  }
+
+  .rich-text-block h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--apx-on-surface);
+  }
+
+  .rich-text-block strong,
+  .rich-text-block b {
+    font-weight: 700;
+    color: var(--apx-on-surface);
+  }
+
+  .rich-text-block em,
+  .rich-text-block i {
+    font-style: italic;
+  }
+
+  .rich-text-block s,
+  .rich-text-block del {
+    text-decoration: line-through;
+  }
+
+  .rich-text-block blockquote {
+    border-left: 4px solid var(--apx-outline-variant);
+    padding-left: 1rem;
+    margin: 0.75rem 0;
+    font-style: italic;
+    color: var(--apx-on-surface-variant);
+  }
+
+  .rich-text-block pre {
+    background-color: var(--apx-surface-container-low);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 0.75rem 0;
+  }
+
+  .rich-text-block code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.875em;
+  }
+
+  .rich-text-block pre code {
+    background: none;
+    padding: 0;
+  }
+
+  .rich-text-block hr {
+    border: none;
+    border-top: 1px solid var(--apx-outline-variant);
+    margin: 1.5rem 0;
+  }
+
   .rich-text-muted {
     max-width: none;
     line-height: 1.5;

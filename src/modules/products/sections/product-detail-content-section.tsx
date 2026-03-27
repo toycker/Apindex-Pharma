@@ -1,5 +1,8 @@
 import type { PublicProductDetail } from "@/lib/data/public-product-detail"
-import { getProductDescriptionParagraphs } from "@/modules/products/lib/product-detail-ui"
+import {
+  getProductDescriptionHtml,
+  getProductDescriptionParagraphs,
+} from "@/modules/products/lib/product-detail-ui"
 
 type ProductDetailContentSectionProps = {
   product: PublicProductDetail
@@ -8,7 +11,10 @@ type ProductDetailContentSectionProps = {
 export default function ProductDetailContentSection({
   product,
 }: ProductDetailContentSectionProps) {
-  const descriptionParagraphs = getProductDescriptionParagraphs(product)
+  const descriptionHtml = getProductDescriptionHtml(product)
+  const descriptionParagraphs = descriptionHtml
+    ? null
+    : getProductDescriptionParagraphs(product)
 
   return (
     <section className="mx-auto mt-8 w-full max-w-screen-2xl px-6 pb-24 md:px-8">
@@ -20,11 +26,18 @@ export default function ProductDetailContentSection({
           <div className="mt-4 h-1.5 w-20 rounded-full bg-[var(--apx-secondary)]" />
         </div>
 
-        <div className="space-y-4 text-lg leading-8 text-[var(--apx-on-surface-variant)]">
-          {descriptionParagraphs.map((paragraph, index) => (
-            <p key={`${product.id}-paragraph-${index + 1}`}>{paragraph}</p>
-          ))}
-        </div>
+        {descriptionHtml ? (
+          <div
+            className="rich-text-block text-lg leading-8 text-[var(--apx-on-surface-variant)]"
+            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+          />
+        ) : (
+          <div className="space-y-4 text-lg leading-8 text-[var(--apx-on-surface-variant)]">
+            {descriptionParagraphs!.map((paragraph, index) => (
+              <p key={`${product.id}-paragraph-${index + 1}`}>{paragraph}</p>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
