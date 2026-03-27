@@ -4,13 +4,13 @@
 @import "tailwindcss/utilities";
 
 :root {
-  --apx-primary: #964900;
-  --apx-primary-container: #f58220;
-  --apx-primary-fixed: #ffdcc6;
-  --apx-secondary: #336b00;
-  --apx-secondary-container: #aff679;
-  --apx-secondary-fixed: #aff679;
-  --apx-on-secondary-container: #377200;
+  --apx-primary: #E8961D;
+  --apx-primary-container: #F5A623;
+  --apx-primary-fixed: #FFF3E0;
+  --apx-secondary: #6BAD23;
+  --apx-secondary-container: #D4ED9F;
+  --apx-secondary-fixed: #D4ED9F;
+  --apx-on-secondary-container: #3D7A15;
   --apx-surface: #fbf9f8;
   --apx-surface-container-low: #f5f3f3;
   --apx-surface-container-lowest: #ffffff;
@@ -44,6 +44,15 @@ body {
 
 .apx-font-body {
   font-family: var(--font-inter), sans-serif;
+}
+
+/* ── Section typography ── reusable across all public pages ── */
+.section-heading {
+  @apply apx-font-headline text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl;
+}
+
+.section-description {
+  @apply text-base leading-relaxed text-on-surface-variant sm:text-lg;
 }
 
 .apx-landing ::selection {

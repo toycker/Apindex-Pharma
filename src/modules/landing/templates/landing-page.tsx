@@ -1,22 +1,23 @@
-import CertificationsSection from "@modules/landing/sections/certifications-section"
-import DosageFormsSection from "@modules/landing/sections/dosage-forms-section"
+import CategoriesSection from "@modules/landing/sections/categories-section"
 import GlobalPresenceSection from "@modules/landing/sections/global-presence-section"
 import HeroSection from "@modules/landing/sections/hero-section"
 import QualityCommitmentSection from "@modules/landing/sections/quality-commitment-section"
 import ServicesSection from "@modules/landing/sections/services-section"
+import WelcomeSection from "@modules/landing/sections/welcome-section"
+import WhyChooseUsSection from "@modules/landing/sections/why-choose-us-section"
 
 export default function LandingPageTemplate() {
   return (
-    <div className="apx-landing apx-font-body bg-[var(--apx-surface)] text-[var(--apx-on-surface)]">
+    <div className="apx-landing apx-font-body bg-surface text-on-surface">
       <main className="!pb-0">
         <HeroSection />
-        <DosageFormsSection />
+        <WelcomeSection />
+        <CategoriesSection />
         <ServicesSection />
         <GlobalPresenceSection />
+        <WhyChooseUsSection />
         <QualityCommitmentSection />
-        <CertificationsSection />
       </main>
     </div>
   )
 }
-

@@ -1,4 +1,5 @@
 import Image from "next/image"
+import SectionBadge from "@modules/common/components/section-badge"
 
 type StoryCard = {
   title: string
@@ -42,18 +43,27 @@ const STORY_CARDS: StoryCard[] = [
 ]
 
 const BORDER_TONE_CLASS: Record<StoryCard["borderTone"], string> = {
-  primary: "border-[var(--apx-primary)]",
-  secondary: "border-[var(--apx-secondary)]",
+  primary: "border-primary",
+  secondary: "border-secondary",
 }
 
 export default function QualityCommitmentSection() {
   return (
-    <section className="bg-[var(--apx-surface)] py-32">
+    <section className="bg-surface py-16 lg:py-24">
       <div className="mx-auto max-w-screen-2xl px-8">
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="mb-12 space-y-4">
+          <SectionBadge tone="secondary">Our Story</SectionBadge>
+          <h2 className="section-heading">
+            Commitment to <span className="text-secondary">Excellence</span>
+          </h2>
+          <p className="section-description max-w-2xl">
+            Driven by purpose, guided by science — our mission, vision, and leadership define who we are.
+          </p>
+        </div>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {STORY_CARDS.map((card) => (
             <div key={card.title} className="group">
-              <div className="relative mb-8 h-[400px] overflow-hidden rounded-xl bg-[var(--apx-surface-container-low)]">
+              <div className="relative mb-8 h-[400px] overflow-hidden rounded-xl bg-surface-low">
                 <Image
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
@@ -67,7 +77,7 @@ export default function QualityCommitmentSection() {
               >
                 {card.title}
               </h3>
-              <p className="leading-relaxed text-[var(--apx-on-surface-variant)]">
+              <p className="section-description">
                 {card.description}
               </p>
             </div>

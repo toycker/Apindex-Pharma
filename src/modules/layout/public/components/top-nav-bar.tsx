@@ -71,8 +71,8 @@ export default function TopNavBar() {
                 aria-current={isActive ? "page" : undefined}
                 className={`apx-font-headline text-sm font-semibold uppercase tracking-wide transition-colors ${
                   isActive
-                    ? "border-b-2 border-[var(--apx-primary)] pb-1 text-[var(--apx-primary)]"
-                    : "text-zinc-600 hover:text-[var(--apx-primary)]"
+                    ? "border-b-2 border-primary pb-1 text-primary"
+                    : "text-zinc-600 hover:text-primary"
                 }`}
               >
                 {item.label}
@@ -89,7 +89,7 @@ export default function TopNavBar() {
             isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"
           }
           onClick={() => setIsMobileMenuOpen((currentValue) => !currentValue)}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[color:rgb(150_73_0/0.14)] bg-white text-[var(--apx-primary)] transition-colors hover:border-[var(--apx-primary)] hover:text-[var(--apx-primary)] md:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/[0.14] bg-white text-primary transition-colors hover:border-primary hover:text-primary md:hidden"
         >
           {isMobileMenuOpen ? (
             <XMarkIcon className="h-6 w-6" />
@@ -100,7 +100,7 @@ export default function TopNavBar() {
 
         <Link
           href={quoteHref}
-          className="ambient-shadow hidden rounded-md bg-[var(--apx-primary-container)] px-5 py-2.5 text-sm font-semibold text-white md:inline-flex"
+          className="ambient-shadow hidden rounded-md bg-primary-container px-5 py-2.5 text-sm font-semibold text-white md:inline-flex"
         >
           Request a Quote
         </Link>
@@ -109,7 +109,7 @@ export default function TopNavBar() {
       {isMobileMenuOpen ? (
         <div
           id="apindex-mobile-navigation"
-          className="border-t border-[color:rgb(150_73_0/0.1)] bg-white/95 px-4 py-4 shadow-lg backdrop-blur md:hidden"
+          className="border-t border-primary/10 bg-white/95 px-4 py-4 shadow-lg backdrop-blur md:hidden"
         >
           <div className="mx-auto flex w-full max-w-screen-2xl flex-col gap-2">
             {NAV_ITEMS.map((item) => {
@@ -122,8 +122,8 @@ export default function TopNavBar() {
                   aria-current={isActive ? "page" : undefined}
                   className={`rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${
                     isActive
-                      ? "bg-[color:rgb(150_73_0/0.08)] text-[var(--apx-primary)]"
-                      : "text-zinc-700 hover:bg-zinc-100 hover:text-[var(--apx-primary)]"
+                      ? "bg-primary/[0.08] text-primary"
+                      : "text-zinc-700 hover:bg-zinc-100 hover:text-primary"
                   }`}
                 >
                   {item.label}
@@ -133,7 +133,7 @@ export default function TopNavBar() {
 
             <Link
               href={quoteHref}
-              className="mt-2 inline-flex items-center justify-center rounded-xl bg-[var(--apx-primary-container)] px-4 py-3 text-sm font-semibold text-white"
+              className="mt-2 inline-flex items-center justify-center rounded-xl bg-primary-container px-4 py-3 text-sm font-semibold text-white"
             >
               Request a Quote
             </Link>

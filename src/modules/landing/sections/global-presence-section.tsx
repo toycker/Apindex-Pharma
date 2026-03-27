@@ -1,4 +1,5 @@
 import Image from "next/image"
+import SectionBadge from "@modules/common/components/section-badge"
 
 const GLOBAL_STATS = [
   { value: "86+", label: "Countries Served" },
@@ -11,7 +12,7 @@ export default function GlobalPresenceSection() {
   return (
     <section
       id="global-presence"
-      className="relative overflow-hidden bg-[#0d1117] py-24 text-white"
+      className="relative overflow-hidden bg-[#0d1117] py-16 lg:py-24 text-white"
     >
       {/* World map — subtle background */}
       <div className="absolute inset-0">
@@ -32,42 +33,25 @@ export default function GlobalPresenceSection() {
       {/* Ambient centre glow */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-        style={{ backgroundColor: "rgba(245,130,32,0.06)" }}
+        style={{ backgroundColor: "rgba(232,150,29,0.06)" }}
         aria-hidden="true"
       />
 
       <div className="relative z-10 mx-auto max-w-5xl px-6">
         {/* Badge */}
         <div className="mb-6 flex justify-center">
-          <div
-            className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5"
-            style={{
-              borderColor: "rgba(245,130,32,0.28)",
-              backgroundColor: "rgba(245,130,32,0.09)",
-            }}
-          >
-            <span
-              className="h-1.5 w-1.5 rounded-full"
-              style={{ backgroundColor: "var(--apx-primary-container)" }}
-            />
-            <span
-              className="text-[11px] font-semibold uppercase tracking-[0.18em]"
-              style={{ color: "var(--apx-primary-container)" }}
-            >
-              Our Global Reach
-            </span>
-          </div>
+          <SectionBadge tone="primary" variant="dark">Our Global Reach</SectionBadge>
         </div>
 
         {/* Heading */}
         <div className="mb-16 text-center">
-          <h2 className="apx-font-headline mb-4 text-4xl font-bold leading-tight md:text-[52px]">
+          <h2 className="section-heading mb-4 text-white">
             A Global Network{" "}
-            <span style={{ color: "var(--apx-primary-container)" }}>
+            <span className="text-primary-container">
               of Trust
             </span>
           </h2>
-          <p className="mx-auto max-w-lg text-base leading-relaxed text-zinc-400">
+          <p className="mx-auto max-w-lg text-base leading-relaxed text-zinc-400 sm:text-lg">
             Exporting excellence to every corner of the world, ensuring health
             is a universal right.
           </p>
@@ -78,22 +62,21 @@ export default function GlobalPresenceSection() {
           {GLOBAL_STATS.map((stat) => (
             <div
               key={stat.label}
-              className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.04] px-6 py-10 text-center backdrop-blur-sm transition-all duration-300 hover:border-[rgba(245,130,32,0.28)] hover:bg-white/[0.07]"
+              className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.04] px-6 py-10 text-center backdrop-blur-sm transition-all duration-300 hover:border-[rgba(232,150,29,0.28)] hover:bg-white/[0.07]"
             >
               {/* Card hover glow */}
               <div
                 className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 style={{
                   background:
-                    "radial-gradient(ellipse at 50% 0%, rgba(245,130,32,0.12), transparent 70%)",
+                    "radial-gradient(ellipse at 50% 0%, rgba(232,150,29,0.12), transparent 70%)",
                 }}
                 aria-hidden="true"
               />
 
               <div className="relative">
                 <div
-                  className="mb-2 text-5xl font-extrabold tracking-tight"
-                  style={{ color: "var(--apx-primary-container)" }}
+                  className="mb-2 text-5xl font-extrabold tracking-tight text-primary-container"
                 >
                   {stat.value}
                 </div>

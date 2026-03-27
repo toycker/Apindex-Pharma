@@ -13,7 +13,7 @@ type LoginTemplateProps = {
 const LoginTemplateContent = ({ next, returnUrl }: LoginTemplateProps) => {
   return (
     <AuthShell
-      title="Welcome to Toycker"
+      title="Welcome to Apindex"
       subtitle="Enter your WhatsApp number to continue"
     >
       <PhoneLogin next={next} returnUrl={returnUrl} />

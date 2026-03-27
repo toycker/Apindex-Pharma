@@ -35,9 +35,29 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
-        primary: "#ed1c24",
-        secondary: "#ffc300",
-        foreground: "#ac0606",
+        primary: {
+          DEFAULT: '#E8961D',
+          container: '#F5A623',
+          fixed: '#FFF3E0',
+        },
+        secondary: {
+          DEFAULT: '#6BAD23',
+          container: '#D4ED9F',
+          fixed: '#D4ED9F',
+        },
+        'on-secondary-container': '#3D7A15',
+        foreground: '#C47A10',
+        surface: {
+          DEFAULT: '#fbf9f8',
+          low: '#f5f3f3',
+          lowest: '#ffffff',
+          high: '#e9e8e7',
+        },
+        'on-surface': {
+          DEFAULT: '#1b1c1c',
+          variant: '#564336',
+        },
+        'outline-variant': '#ddc1b0',
         // Shopify Polaris Admin Tokens
         admin: {
           bg: "#f1f2f4", // Surface color

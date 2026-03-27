@@ -27,7 +27,7 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-3xl px-8 pb-20 md:px-14">
         <h1 className="text-4xl font-extrabold uppercase leading-[1.15] tracking-wide text-white sm:text-5xl md:text-6xl">
           YOUR{" "}
-          <span style={{ color: "var(--apx-primary-container)" }}>TRUSTED PARTNER</span>
+          <span className="text-primary-container">TRUSTED PARTNER</span>
           <br />
           IN GLOBAL HEALTHCARE
         </h1>
@@ -41,8 +41,7 @@ export default function HeroSection() {
         <div className="mt-7 flex flex-wrap gap-3">
           <Link
             href="/products"
-            className="rounded-lg px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "var(--apx-primary-container)" }}
+            className="rounded-lg bg-primary-container px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
           >
             Explore Our Products
           </Link>
