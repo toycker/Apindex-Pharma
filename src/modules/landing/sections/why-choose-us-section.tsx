@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react"
 import { Globe, Settings2, ShieldCheck } from "lucide-react"
+import SectionBadge from "@modules/common/components/section-badge"
 
 type FeatureItem = {
   icon: LucideIcon
@@ -29,17 +30,18 @@ export default function WhyChooseUsSection() {
   return (
     <section
       id="why-choose-us"
-      className="bg-[var(--apx-surface)] py-16 lg:py-24"
+      className="bg-surface py-16 lg:py-24"
     >
       <div className="mx-auto max-w-screen-2xl px-8">
         <div className="flex lg:flex-row flex-col items-start gap-10">
 
           {/* Left: intro block */}
           <div className="w-full lg:w-1/3">
-            <h2 className="apx-font-headline text-4xl font-bold">
-              Why Choose Apindex?
+            <SectionBadge tone="primary" className="mb-4">Our Strengths</SectionBadge>
+            <h2 className="section-heading">
+              Why Choose <span className="text-primary">Apindex?</span>
             </h2>
-            <p className="mt-4 text-lg leading-relaxed text-[var(--apx-on-surface-variant)]">
+            <p className="mt-4 section-description">
               Precision is the hallmark of pharmaceutical leadership. A company
               matured to deliver global solutions with modern manufacturing and
               uncompromising quality standards.
@@ -54,13 +56,13 @@ export default function WhyChooseUsSection() {
                 <div key={item.title}>
                   <Icon
                     aria-hidden="true"
-                    className="h-12 w-12 text-[var(--apx-primary)]"
+                    className="h-12 w-12 text-primary"
                     strokeWidth={1.4}
                   />
-                  <h3 className="apx-font-headline mt-5 text-base font-extrabold uppercase tracking-wide text-[var(--apx-on-surface)]">
+                  <h3 className="apx-font-headline mt-5 text-base font-extrabold uppercase tracking-wide text-on-surface">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-lg leading-relaxed text-[var(--apx-on-surface-variant)]">
+                  <p className="mt-2 section-description">
                     {item.description}
                   </p>
                 </div>

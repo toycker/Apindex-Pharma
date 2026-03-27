@@ -38,7 +38,7 @@ export default function FooterSection() {
 
         {/* Col 2: Quick Links */}
         <div className="space-y-5">
-          <h4 className="apx-font-headline font-bold text-[var(--apx-on-surface)]">
+          <h4 className="apx-font-headline font-bold text-on-surface">
             Quick Links
           </h4>
           <ul className="space-y-3">
@@ -46,7 +46,7 @@ export default function FooterSection() {
               <li key={link.label}>
                 <Link
                   href={link.href}
-                  className="text-sm text-zinc-600 transition-colors hover:text-[var(--apx-primary)]"
+                  className="text-sm text-zinc-600 transition-colors hover:text-primary"
                 >
                   {link.label}
                 </Link>
@@ -57,7 +57,7 @@ export default function FooterSection() {
 
         {/* Col 3: Certifications */}
         <div className="space-y-5">
-          <h4 className="apx-font-headline font-bold text-[var(--apx-on-surface)]">
+          <h4 className="apx-font-headline font-bold text-on-surface">
             Certifications
           </h4>
           <ul className="space-y-3">
@@ -69,14 +69,14 @@ export default function FooterSection() {
 
         {/* Col 4: Contact */}
         <div className="min-w-0 space-y-5">
-          <h4 className="apx-font-headline font-bold text-[var(--apx-on-surface)]">
+          <h4 className="apx-font-headline font-bold text-on-surface">
             Contact Us
           </h4>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <MdLocationOn
                 aria-hidden="true"
-                className="mt-0.5 flex-shrink-0 text-lg text-[var(--apx-primary)]"
+                className="mt-0.5 flex-shrink-0 text-lg text-primary"
               />
               <p className="break-words text-sm text-zinc-600">
                 Head Office: 123 Pharma Estate, Innovation Park,
@@ -86,14 +86,14 @@ export default function FooterSection() {
             <div className="flex items-center gap-3">
               <MdCall
                 aria-hidden="true"
-                className="flex-shrink-0 text-lg text-[var(--apx-primary)]"
+                className="flex-shrink-0 text-lg text-primary"
               />
               <p className="text-sm text-zinc-600">+91 2345678900</p>
             </div>
             <div className="flex items-center gap-3">
               <MdMail
                 aria-hidden="true"
-                className="flex-shrink-0 text-lg text-[var(--apx-primary)]"
+                className="flex-shrink-0 text-lg text-primary"
               />
               <p className="break-all text-sm text-zinc-600">contact@apindexpharma.com</p>
             </div>
@@ -104,7 +104,7 @@ export default function FooterSection() {
 
       {/* Bottom bar */}
       <div className="mx-auto max-w-screen-2xl px-8 pb-10">
-        <div className="flex flex-col items-center justify-center border-t border-[color:rgb(221_193_176/0.2)] pt-8">
+        <div className="flex flex-col items-center justify-center border-t border-outline-variant/20 pt-8">
           <p className="text-sm text-zinc-500">
             &copy; {new Date().getFullYear()} Apindex Pharmaceuticals. All rights reserved.
           </p>

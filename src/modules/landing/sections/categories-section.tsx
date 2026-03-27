@@ -5,10 +5,9 @@ import {
   FaSyringe,
   FaTablets,
 } from "react-icons/fa"
-import { GiMedicines } from "react-icons/gi"
-import { MdApps } from "react-icons/md"
-import { MdSanitizer } from "react-icons/md"
+import { MdApps, MdSanitizer } from "react-icons/md"
 import { TbMedicineSyrup } from "react-icons/tb"
+import SectionBadge from "@modules/common/components/section-badge"
 
 type CategoryCard = {
   icon: IconType
@@ -56,19 +55,17 @@ const CATEGORY_CARDS: CategoryCard[] = [
 
 export default function CategoriesSection() {
   return (
-    <section id="categories" className="bg-[var(--apx-surface-container-low)] py-16 lg:py-24">
+    <section id="categories" className="bg-surface-low py-16 lg:py-24">
       <div className="mx-auto max-w-screen-2xl px-8">
         <div className="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <p className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-[var(--apx-primary)]">
-              Dosage Forms
-            </p>
-            <h2 className="apx-font-headline text-4xl font-bold">
-              Product Categories
+            <SectionBadge tone="secondary" className="mb-4">Dosage Forms</SectionBadge>
+            <h2 className="section-heading">
+              Product <span className="text-secondary">Categories</span>
             </h2>
           </div>
-          <div className="mx-12 mb-4 hidden h-px flex-grow bg-[color:rgb(221_193_176/0.3)] md:block" />
-          <p className="max-w-xs font-serif italic text-[var(--apx-on-surface-variant)]">
+          <div className="mx-12 mb-4 hidden h-px flex-grow bg-outline-variant/30 md:block" />
+          <p className="section-description max-w-xs font-serif italic">
             Engineered for every therapeutic need and patient requirement.
           </p>
         </div>
