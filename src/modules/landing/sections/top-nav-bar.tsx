@@ -15,6 +15,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
 ]
 
@@ -37,20 +38,17 @@ function isNavItemActive(pathname: string, href: string) {
 export default function TopNavBar() {
   const pathname = normalizePathname(usePathname() ?? "/")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const quoteHref = pathname === "/contact" ? "#contact-form" : "/contact#contact-form"
+  const quoteHref =
+    pathname === "/contact" ? "#contact-form" : "/contact#contact-form"
 
   useEffect(() => {
     setIsMobileMenuOpen(false)
   }, [pathname])
 
   return (
-    <nav className="glass-nav fixed top-0 z-50 w-full bg-white/80 shadow-sm">
+    <nav className="glass-nav fixed top-0 z-50 w-full bg-white shadow-md">
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
-        <Link
-          href="/"
-          aria-label="Apindex home"
-          className="shrink-0"
-        >
+        <Link href="/" aria-label="Apindex home" className="shrink-0">
           <Image
             src="/apindex-logo.jpg"
             alt="Apindex"
@@ -87,7 +85,9 @@ export default function TopNavBar() {
           type="button"
           aria-expanded={isMobileMenuOpen}
           aria-controls="apindex-mobile-navigation"
-          aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={
+            isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
           onClick={() => setIsMobileMenuOpen((currentValue) => !currentValue)}
           className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[color:rgb(150_73_0/0.14)] bg-white text-[var(--apx-primary)] transition-colors hover:border-[var(--apx-primary)] hover:text-[var(--apx-primary)] md:hidden"
         >
