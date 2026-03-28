@@ -5,19 +5,19 @@ const AUTHOR_IMAGE_URL =
 
 export default function AboutQuoteSection() {
   return (
-    <section className="bg-white py-14 sm:py-20">
-      <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-        <div className="relative overflow-hidden rounded-[6px] bg-[linear-gradient(180deg,#faf6f2_0%,#f7f4f1_100%)] px-7 py-8 sm:px-10 sm:py-10">
-          <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.26em] text-[color:rgb(150_73_0/0.62)]">
+    <section className="bg-surface-low py-16 lg:py-24">
+      <div className="content-container">
+        <div className="relative overflow-hidden rounded-2xl bg-surface px-8 py-10 sm:px-12 sm:py-14">
+          <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
             Leadership Perspective
           </p>
           <blockquote className="relative max-w-[820px] pr-10 sm:pr-16">
-            <p className="apx-font-headline text-[24px] font-medium italic leading-[1.4] tracking-[-0.02em] text-[color:rgb(86_67_54/0.9)] sm:text-[34px]">
+            <p className="apx-font-headline text-2xl font-medium italic leading-[1.4] tracking-tight text-on-surface/90 sm:text-4xl">
               &quot;Innovation at Apindex isn&apos;t just about molecules; it&apos;s about the
               human impact every capsule we manufacture has. Every promise of quality to a
               patient in Nairobi, London, or Mumbai.&quot;
             </p>
-            <span className="pointer-events-none absolute -right-1 top-[-22px] text-[120px] leading-none text-[color:rgb(86_67_54/0.09)] sm:text-[160px]">
+            <span className="pointer-events-none absolute -right-1 top-[-22px] text-[120px] leading-none text-on-surface-variant/20 sm:text-[160px]">
               &rdquo;
             </span>
           </blockquote>
@@ -33,8 +33,8 @@ export default function AboutQuoteSection() {
               />
             </div>
             <div>
-              <p className="text-sm font-semibold text-[var(--apx-on-surface)]">Managing Director</p>
-              <p className="text-xs text-zinc-500">Apindex Pharmaceuticals</p>
+              <p className="text-sm font-semibold text-on-surface">Managing Director</p>
+              <p className="text-xs text-on-surface-variant">Apindex Pharmaceuticals</p>
             </div>
           </div>
         </div>

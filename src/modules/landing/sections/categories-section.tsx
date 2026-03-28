@@ -56,7 +56,7 @@ const CATEGORY_CARDS: CategoryCard[] = [
 export default function CategoriesSection() {
   return (
     <section id="categories" className="bg-surface-low py-16 lg:py-24">
-      <div className="mx-auto max-w-screen-2xl px-8">
+      <div className="content-container">
         <div className="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <SectionBadge tone="secondary" className="mb-4">Dosage Forms</SectionBadge>

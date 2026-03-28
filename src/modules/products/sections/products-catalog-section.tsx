@@ -31,7 +31,7 @@ export default function ProductsCatalogSection({
   const AllCategoriesIcon = getAllCategoriesIcon()
 
   return (
-    <section className="mx-auto flex w-full max-w-screen-2xl flex-col gap-12 px-6 py-16 md:px-8 lg:flex-row lg:gap-16 lg:py-20">
+    <section className="content-container flex flex-col gap-12 py-16 lg:flex-row lg:gap-16 lg:py-20">
       <aside className="lg:w-72 lg:shrink-0">
         <div className="lg:sticky lg:top-28">
           <div className="mb-8">

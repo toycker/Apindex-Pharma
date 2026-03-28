@@ -37,7 +37,7 @@ export default function GlobalPresenceSection() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6">
+      <div className="relative z-10 content-container">
         {/* Badge */}
         <div className="mb-6 flex justify-center">
           <SectionBadge tone="primary" variant="dark">Our Global Reach</SectionBadge>

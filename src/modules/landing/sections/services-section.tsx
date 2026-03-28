@@ -70,7 +70,7 @@ const ICON_TONE_CLASS: Record<ServiceCard["iconTone"], string> = {
 export default function ServicesSection() {
   return (
     <section id="infrastructure" className="bg-surface py-16 lg:py-24">
-      <div className="mx-auto grid max-w-screen-2xl items-center gap-12 px-8 lg:grid-cols-2">
+      <div className="content-container grid items-center gap-12 lg:grid-cols-2">
         {/* Text content — shown first on mobile via order */}
         <div className="order-1 space-y-6 lg:order-2 lg:space-y-10">
           <SectionBadge tone="secondary">Our Capabilities</SectionBadge>

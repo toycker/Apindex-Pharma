@@ -18,7 +18,7 @@ export default function ContactHeroSection() {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(251,249,248,0.96)_30%,rgba(251,249,248,0.64)_100%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-6 py-14 sm:px-8">
+      <div className="relative z-10 content-container py-14">
         <div className="max-w-[560px]">
           <span className="mb-6 inline-block rounded-full bg-[var(--apx-secondary-container)] px-4 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--apx-on-secondary-container)]">
             Global Reach

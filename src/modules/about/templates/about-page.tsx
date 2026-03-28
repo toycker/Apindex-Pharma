@@ -7,7 +7,7 @@ import AboutStatsSection from "@modules/about/sections/about-stats-section"
 import AboutValidatedExcellenceSection from "@modules/about/sections/about-validated-excellence-section"
 export default function AboutPageTemplate() {
   return (
-    <div className="apx-landing apx-font-body bg-[var(--apx-surface)] text-[var(--apx-on-surface)]">
+    <div className="apx-landing apx-font-body bg-surface text-on-surface">
       <main className="!pb-0">
         <AboutHeroSection />
         <AboutIntroSection />
