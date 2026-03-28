@@ -11,7 +11,7 @@ export default function ProductDetailPageTemplate({
   product,
 }: ProductDetailPageTemplateProps) {
   return (
-    <div className="apx-landing apx-font-body min-h-screen bg-[var(--apx-surface)] text-[var(--apx-on-surface)]">
+    <div className="apx-landing apx-font-body min-h-screen bg-surface text-on-surface">
       <main className="!pb-0 pt-20">
         <ProductBreadcrumbsSection product={product} />
         <ProductHeroSection product={product} />
