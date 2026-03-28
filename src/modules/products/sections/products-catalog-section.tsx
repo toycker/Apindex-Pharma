@@ -31,14 +31,14 @@ export default function ProductsCatalogSection({
   const AllCategoriesIcon = getAllCategoriesIcon()
 
   return (
-    <section className="content-container flex flex-col gap-12 py-16 lg:flex-row lg:gap-16 lg:py-20">
+    <section className="content-container flex flex-col gap-12 py-16 lg:flex-row lg:gap-16 lg:py-24">
       <aside className="lg:w-72 lg:shrink-0">
         <div className="lg:sticky lg:top-28">
           <div className="mb-8">
-            <h2 className="apx-font-headline text-2xl font-bold text-[var(--apx-on-surface)]">
+            <h2 className="apx-font-headline text-2xl font-bold text-on-surface">
               Therapeutic Categories
             </h2>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--apx-on-surface-variant)]">
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-on-surface-variant">
               Browse by molecular group
             </p>
           </div>
@@ -48,8 +48,8 @@ export default function ProductsCatalogSection({
               href={buildProductsPageHref({ query: catalog.query })}
               className={`flex items-center gap-4 rounded-2xl px-4 py-4 text-sm font-semibold transition-all ${
                 !catalog.selectedCategory
-                  ? "scale-[0.98] bg-[var(--apx-secondary-container)] text-[var(--apx-on-secondary-container)]"
-                  : "text-zinc-600 hover:bg-[var(--apx-surface-container-low)] hover:text-[var(--apx-primary)]"
+                  ? "scale-[0.98] bg-secondary-container text-on-secondary-container"
+                  : "text-zinc-600 hover:bg-surface-low hover:text-primary"
               }`}
             >
               <AllCategoriesIcon className="text-xl" />
@@ -69,8 +69,8 @@ export default function ProductsCatalogSection({
                   })}
                   className={`flex items-center gap-4 rounded-2xl px-4 py-4 text-sm font-semibold transition-all ${
                     isSelected
-                      ? "scale-[0.98] bg-[var(--apx-secondary-container)] text-[var(--apx-on-secondary-container)]"
-                      : "text-zinc-600 hover:bg-[var(--apx-surface-container-low)] hover:text-[var(--apx-primary)]"
+                      ? "scale-[0.98] bg-secondary-container text-on-secondary-container"
+                      : "text-zinc-600 hover:bg-surface-low hover:text-primary"
                   }`}
                 >
                   <CategoryIcon className="text-xl" />
@@ -80,17 +80,17 @@ export default function ProductsCatalogSection({
             })}
           </nav>
 
-          <div className="mt-10 rounded-[1.75rem] bg-[var(--apx-primary-fixed)] p-6 shadow-sm">
-            <h3 className="apx-font-headline text-lg font-bold text-[var(--apx-on-surface)]">
+          <div className="mt-10 rounded-2xl bg-primary-fixed p-6 shadow-sm">
+            <h3 className="apx-font-headline text-lg font-bold text-on-surface">
               Request Catalog
             </h3>
-            <p className="mt-2 text-sm leading-6 text-[var(--apx-on-surface-variant)]">
+            <p className="mt-2 text-sm leading-6 text-on-surface-variant">
               Get our full pharmaceutical directory delivered to your inbox for
               institutional and export enquiries.
             </p>
             <a
               href={catalogRequestHref}
-              className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[var(--apx-on-surface)] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[var(--apx-primary)]"
+              className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-on-surface px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-primary"
             >
               Email Catalog Request
             </a>
@@ -101,10 +101,10 @@ export default function ProductsCatalogSection({
       <div className="min-w-0 flex-1">
         <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 className="apx-font-headline text-3xl font-bold text-[var(--apx-on-surface)] md:text-4xl">
+            <h2 className="apx-font-headline text-3xl font-bold text-on-surface md:text-4xl">
               Product Registry
             </h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--apx-on-surface-variant)] md:text-base">
+            <p className="mt-2 text-sm leading-6 text-on-surface-variant md:text-base">
               Showing {catalog.total} result{catalog.total === 1 ? "" : "s"} in {selectedCategoryName}
             </p>
           </div>
@@ -113,7 +113,7 @@ export default function ProductsCatalogSection({
             <select
               disabled
               defaultValue={CATALOG_DOSAGE_OPTIONS[0]}
-              className="w-full cursor-not-allowed rounded-2xl border border-[color:rgb(221_193_176/0.2)] bg-[var(--apx-surface-container-low)] px-4 py-3 text-sm font-medium text-[var(--apx-on-surface-variant)] opacity-80 outline-none md:w-[220px]"
+              className="w-full cursor-not-allowed rounded-2xl border border-outline-variant/20 bg-surface-low px-4 py-3 text-sm font-medium text-on-surface-variant opacity-80 outline-none md:w-[220px]"
               aria-label="Dosage form filter coming later"
             >
               {CATALOG_DOSAGE_OPTIONS.map((option) => (
@@ -133,32 +133,32 @@ export default function ProductsCatalogSection({
               return (
                 <article
                   key={product.id}
-                  className="group flex min-h-[250px] flex-col justify-between rounded-[2rem] border border-[color:rgb(221_193_176/0.14)] bg-white p-6 shadow-[0_18px_40px_rgba(86,67,54,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(86,67,54,0.12)]"
+                  className="group flex min-h-[250px] flex-col justify-between rounded-2xl border border-outline-variant/15 bg-surface-lowest p-6 ambient-shadow transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div>
                     <div className="mb-6 flex items-start justify-between gap-4">
-                      <span className="rounded-full bg-[var(--apx-secondary-container)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--apx-on-secondary-container)]">
+                      <span className="rounded-full bg-secondary-container px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-on-secondary-container">
                         {getProductBadge(product)}
                       </span>
-                      <ProductIcon className="text-2xl text-[color:rgb(150_73_0/0.28)] transition-colors group-hover:text-[var(--apx-primary)]" />
+                      <ProductIcon className="text-2xl text-primary/30 transition-colors group-hover:text-primary" />
                     </div>
-                    <h3 className="apx-font-headline text-2xl font-bold tracking-tight text-[var(--apx-on-surface)]">
+                    <h3 className="apx-font-headline text-2xl font-bold tracking-tight text-on-surface">
                       <Link
                         href={buildProductDetailHref(product.handle)}
-                        className="transition-colors hover:text-[var(--apx-primary)]"
+                        className="transition-colors hover:text-primary"
                       >
                         {product.name}
                       </Link>
                     </h3>
-                    <p className="mt-3 text-sm leading-6 text-[var(--apx-on-surface-variant)]">
+                    <p className="mt-3 text-sm leading-6 text-on-surface-variant">
                       {getProductSummary(product)}
                     </p>
                   </div>
 
-                  <div className="mt-8 border-t border-[var(--apx-surface-container-high)] pt-6">
+                  <div className="mt-8 border-t border-surface-high pt-6">
                     <Link
                       href={buildProductDetailHref(product.handle)}
-                      className="flex items-center justify-between text-sm font-bold text-[var(--apx-on-surface)] transition-colors hover:text-[var(--apx-primary)]"
+                      className="flex items-center justify-between text-sm font-bold text-on-surface transition-colors hover:text-primary"
                     >
                       <span>View Product</span>
                       <HiOutlineArrowUpRight className="text-lg" />
@@ -169,24 +169,24 @@ export default function ProductsCatalogSection({
             })}
           </div>
         ) : (
-          <div className="rounded-[2rem] border border-dashed border-[color:rgb(221_193_176/0.5)] bg-[var(--apx-surface-container-low)] px-6 py-16 text-center">
-            <h3 className="apx-font-headline text-2xl font-bold text-[var(--apx-on-surface)]">
+          <div className="rounded-2xl border border-dashed border-outline-variant/50 bg-surface-low px-6 py-16 text-center">
+            <h3 className="apx-font-headline text-2xl font-bold text-on-surface">
               No products found
             </h3>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[var(--apx-on-surface-variant)]">
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-on-surface-variant">
               Adjust your search or therapeutic category filter to review the available
               pharmaceutical catalogue entries.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Link
                 href="/products"
-                className="rounded-xl bg-[var(--apx-primary)] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[var(--apx-primary-container)]"
+                className="rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-container"
               >
                 Clear filters
               </Link>
               <a
                 href={catalogRequestHref}
-                className="rounded-xl border border-[color:rgb(150_73_0/0.18)] bg-white px-5 py-3 text-sm font-bold text-[var(--apx-primary)] transition-colors hover:border-[var(--apx-primary)]"
+                className="rounded-xl border border-primary/20 bg-surface-lowest px-5 py-3 text-sm font-bold text-primary transition-colors hover:border-primary"
               >
                 Request catalog
               </a>
@@ -200,7 +200,7 @@ export default function ProductsCatalogSection({
               token === "ellipsis" ? (
                 <span
                   key={`ellipsis-${index + 1}`}
-                  className="px-2 text-sm font-semibold text-[var(--apx-outline)]"
+                  className="px-2 text-sm font-semibold text-on-surface-variant"
                 >
                   ...
                 </span>
@@ -214,8 +214,8 @@ export default function ProductsCatalogSection({
                   })}
                   className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all ${
                     token === catalog.page
-                      ? "bg-[var(--apx-surface-container-high)] text-[var(--apx-on-surface)]"
-                      : "text-[var(--apx-on-surface-variant)] hover:bg-[var(--apx-surface-container-low)]"
+                      ? "bg-surface-high text-on-surface"
+                      : "text-on-surface-variant hover:bg-surface-low"
                   }`}
                 >
                   {token}
