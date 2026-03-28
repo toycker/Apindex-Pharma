@@ -17,7 +17,7 @@ export default function ProductDetailContentSection({
     : getProductDescriptionParagraphs(product)
 
   return (
-    <section className="mx-auto mt-8 w-full max-w-screen-2xl px-6 pb-24 md:px-8">
+    <section className="content-container mt-8 pb-24">
       <div className="space-y-6">
         <div>
           <h2 className="apx-font-headline text-3xl font-extrabold tracking-tight text-[var(--apx-on-surface)] md:text-[2.15rem]">

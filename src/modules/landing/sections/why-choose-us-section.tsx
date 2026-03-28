@@ -32,7 +32,7 @@ export default function WhyChooseUsSection() {
       id="why-choose-us"
       className="bg-surface py-16 lg:py-24"
     >
-      <div className="mx-auto max-w-screen-2xl px-8">
+      <div className="content-container">
         <div className="flex lg:flex-row flex-col items-start gap-10">
 
           {/* Left: intro block */}

@@ -12,9 +12,8 @@ export default function ProductsHeroSection({
   catalog,
 }: ProductsHeroSectionProps) {
   return (
-    <section className="relative overflow-hidden border-b border-[color:rgb(221_193_176/0.18)] bg-[var(--apx-surface-container-low)] px-6 py-20 md:px-8 md:py-24">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,rgba(221,193,176,0.45)_1px,transparent_0)] bg-[length:40px_40px] opacity-30" />
-      <div className="relative mx-auto grid max-w-screen-2xl gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
+    <section className="relative overflow-hidden border-b border-[color:rgb(221_193_176/0.18)] bg-[var(--apx-surface-container-low)] py-20 md:py-24">
+      <div className="relative content-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
         <div className="max-w-3xl">
           <span className="mb-4 block text-xs font-bold uppercase tracking-[0.3em] text-[var(--apx-primary)]">
             Pioneering Science

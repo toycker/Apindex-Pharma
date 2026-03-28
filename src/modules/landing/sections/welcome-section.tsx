@@ -7,7 +7,7 @@ const WELCOME_IMAGE_URL =
 export default function WelcomeSection() {
   return (
     <section id="welcome" className="bg-surface py-16 lg:py-24">
-      <div className="mx-auto max-w-screen-2xl px-8">
+      <div className="content-container">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Left: text content */}
           <div className="space-y-6">

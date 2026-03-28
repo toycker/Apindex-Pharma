@@ -50,7 +50,7 @@ const BORDER_TONE_CLASS: Record<StoryCard["borderTone"], string> = {
 export default function QualityCommitmentSection() {
   return (
     <section className="bg-surface py-16 lg:py-24">
-      <div className="mx-auto max-w-screen-2xl px-8">
+      <div className="content-container">
         <div className="mb-12 space-y-4">
           <SectionBadge tone="secondary">Our Story</SectionBadge>
           <h2 className="section-heading">

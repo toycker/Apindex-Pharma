@@ -44,7 +44,7 @@ const ICON_TONE_CLASS = {
 export default function ContactContentSection() {
   return (
     <section className="bg-[var(--apx-surface)] py-16 sm:py-24">
-      <div className="mx-auto max-w-screen-2xl px-6 sm:px-8">
+      <div className="content-container">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="space-y-12 lg:col-span-5">
             <div>

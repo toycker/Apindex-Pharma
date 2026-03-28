@@ -9,7 +9,7 @@ const COMPLIANCE_LOGOS = [
 export default function ContactComplianceSection() {
   return (
     <section className="border-y border-[color:rgb(221_193_176/0.1)] bg-[var(--apx-surface-container-low)] py-12">
-      <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-between gap-8 px-6 opacity-70 sm:px-8 md:flex-row">
+      <div className="content-container flex flex-col items-center justify-between gap-8 opacity-70 md:flex-row">
         <div className="flex items-center gap-4">
           <ShieldCheck className="h-9 w-9 text-[var(--apx-secondary)]" strokeWidth={2.1} />
           <p className="text-sm leading-tight text-[var(--apx-on-surface-variant)]">

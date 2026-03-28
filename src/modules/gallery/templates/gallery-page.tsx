@@ -104,7 +104,7 @@ export default function GalleryPageTemplate({
   return (
     <div className="apx-landing apx-font-body min-h-screen bg-[#f9fdfa] text-[var(--apx-on-surface)]">
       <main className="!pb-0 pt-[104px] mix-blend-normal">
-        <div className="mx-auto w-full max-w-screen-xl px-4 py-8">
+        <div className="content-container py-8">
           {/* Header Section */}
           <div className="mb-12 flex flex-col items-center justify-between gap-6 md:flex-row">
             <h1 className="apx-font-headline flex items-center gap-2 text-xl lg:text-2xl font-bold tracking-tight">

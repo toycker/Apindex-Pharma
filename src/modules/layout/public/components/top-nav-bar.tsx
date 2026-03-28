@@ -47,63 +47,67 @@ export default function TopNavBar() {
 
   return (
     <nav className="glass-nav fixed top-0 z-50 w-full bg-white shadow-md">
-      <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
-        <Link href="/" aria-label="Apindex home" className="shrink-0">
-          <Image
-            src="/apindex-logo.jpg"
-            alt="Apindex"
-            width={1920}
-            height={1187}
-            priority
-            quality={100}
-            className="h-14 w-auto object-contain"
-          />
-        </Link>
+      <div className="content-container">
+        <div className="flex w-full items-center justify-between gap-4 py-3 sm:py-4">
+          <Link href="/" aria-label="Apindex home" className="shrink-0">
+            <Image
+              src="/apindex-logo.jpg"
+              alt="Apindex"
+              width={1920}
+              height={1187}
+              priority
+              quality={100}
+              className="h-14 w-auto object-contain"
+            />
+          </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
-          {NAV_ITEMS.map((item) => {
-            const isActive = isNavItemActive(pathname, item.href)
+          <div className="hidden items-center gap-8 md:flex">
+            {NAV_ITEMS.map((item) => {
+              const isActive = isNavItemActive(pathname, item.href)
 
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                aria-current={isActive ? "page" : undefined}
-                className={`apx-font-headline text-sm font-semibold uppercase tracking-wide transition-colors ${
-                  isActive
-                    ? "border-b-2 border-primary pb-1 text-primary"
-                    : "text-zinc-600 hover:text-primary"
-                }`}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`apx-font-headline text-sm font-semibold uppercase tracking-wide transition-colors ${
+                    isActive
+                      ? "border-b-2 border-primary pb-1 text-primary"
+                      : "text-zinc-600 hover:text-primary"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </div>
+
+          <button
+            type="button"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="apindex-mobile-navigation"
+            aria-label={
+              isMobileMenuOpen
+                ? "Close navigation menu"
+                : "Open navigation menu"
+            }
+            onClick={() => setIsMobileMenuOpen((currentValue) => !currentValue)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/[0.14] bg-white text-primary transition-colors hover:border-primary hover:text-primary md:hidden"
+          >
+            {isMobileMenuOpen ? (
+              <XMarkIcon className="h-6 w-6" />
+            ) : (
+              <Bars3Icon className="h-6 w-6" />
+            )}
+          </button>
+
+          <Link
+            href={quoteHref}
+            className="ambient-shadow hidden rounded-md bg-primary-container px-5 py-2.5 text-sm font-semibold text-white md:inline-flex"
+          >
+            Request a Quote
+          </Link>
         </div>
-
-        <button
-          type="button"
-          aria-expanded={isMobileMenuOpen}
-          aria-controls="apindex-mobile-navigation"
-          aria-label={
-            isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"
-          }
-          onClick={() => setIsMobileMenuOpen((currentValue) => !currentValue)}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/[0.14] bg-white text-primary transition-colors hover:border-primary hover:text-primary md:hidden"
-        >
-          {isMobileMenuOpen ? (
-            <XMarkIcon className="h-6 w-6" />
-          ) : (
-            <Bars3Icon className="h-6 w-6" />
-          )}
-        </button>
-
-        <Link
-          href={quoteHref}
-          className="ambient-shadow hidden rounded-md bg-primary-container px-5 py-2.5 text-sm font-semibold text-white md:inline-flex"
-        >
-          Request a Quote
-        </Link>
       </div>
 
       {isMobileMenuOpen ? (

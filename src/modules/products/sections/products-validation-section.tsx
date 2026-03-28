@@ -6,16 +6,17 @@ import { VALIDATED_EXCELLENCE_IMAGE_URL } from "@/modules/products/lib/catalog-u
 
 export default function ProductsValidationSection() {
   return (
-    <section className="mt-8 bg-[var(--apx-surface-container-high)] px-6 py-20 md:px-8 md:py-24">
-      <div className="mx-auto grid max-w-screen-2xl gap-12 md:grid-cols-[minmax(0,1fr)_minmax(280px,520px)] md:items-center md:gap-16">
+    <section className="mt-8 bg-[var(--apx-surface-container-high)] py-10 md:py-12">
+      <div className="content-container grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(280px,520px)] md:items-center md:gap-16">
         <div>
           <h2 className="apx-font-headline text-4xl font-extrabold tracking-tight text-[var(--apx-on-surface)]">
             Validated Excellence
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--apx-on-surface-variant)] md:text-lg">
             Our manufacturing facilities are accredited by leading global health
-            authorities. Every molecule is subjected to a strict validation process
-            designed to maintain purity, consistency, and clinical confidence.
+            authorities. Every molecule is subjected to a strict validation
+            process designed to maintain purity, consistency, and clinical
+            confidence.
           </p>
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             <div className="flex items-center gap-4">
@@ -23,7 +24,9 @@ export default function ProductsValidationSection() {
                 <HiOutlineShieldCheck className="text-xl text-[var(--apx-on-secondary-container)]" />
               </div>
               <div>
-                <p className="text-sm font-bold text-[var(--apx-on-surface)]">GMP Certified</p>
+                <p className="text-sm font-bold text-[var(--apx-on-surface)]">
+                  GMP Certified
+                </p>
                 <p className="text-xs uppercase tracking-[0.16em] text-[var(--apx-on-surface-variant)]">
                   Global Standard Compliance
                 </p>
@@ -34,7 +37,9 @@ export default function ProductsValidationSection() {
                 <LuFlaskConical className="text-xl text-[var(--apx-on-secondary-container)]" />
               </div>
               <div>
-                <p className="text-sm font-bold text-[var(--apx-on-surface)]">ISO 17025</p>
+                <p className="text-sm font-bold text-[var(--apx-on-surface)]">
+                  ISO 17025
+                </p>
                 <p className="text-xs uppercase tracking-[0.16em] text-[var(--apx-on-surface-variant)]">
                   Laboratory Excellence
                 </p>
